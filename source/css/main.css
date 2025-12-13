@@ -574,6 +574,12 @@ pre code {
     vertical-align: top;
     line-height: var(--line-height-code);
     border: none;
+    text-align: left;
+}
+.prose .code-snippet code {
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
 }
 .prose li > ul,
 .prose li > ol {
