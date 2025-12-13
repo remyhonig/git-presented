@@ -450,9 +450,9 @@ function initSyntaxHighlighting() {
         const isInDiffView = el.closest('.diff-line-content') !== null;
         const isAddedLine = isInDiffView && row && row.classList.contains('bg-green-50');
 
-        const isDocblockLine = /^\s*(\*|\/\*\*|\/\*|\*\/)/.test(text) ||
-                              /^\s*\*\s/.test(text) ||
-                              /^\s*\/\//.test(text);
+        // Only match special marker comments: // INFO:, // WARN:, // DANGER:
+        const specialCommentMatch = text.match(/^\s*\/\/\s*(INFO|WARN|DANGER):/i);
+        const specialCommentType = specialCommentMatch ? specialCommentMatch[1].toUpperCase() : null;
 
         if (language && hljs.getLanguage(language)) {
             try {
@@ -460,14 +460,14 @@ function initSyntaxHighlighting() {
                 el.innerHTML = result.value;
                 el.classList.add('hljs');
 
-                if (isAddedLine && isDocblockLine && !el.querySelector('.hljs-comment')) {
-                    el.innerHTML = '<span class="hljs-comment">' + el.innerHTML + '</span>';
+                if (isAddedLine && specialCommentType && !el.querySelector('.comment-marker')) {
+                    el.innerHTML = '<span class="comment-marker comment-' + specialCommentType.toLowerCase() + '">' + el.innerHTML + '</span>';
                 }
             } catch (e) {
                 // Ignore highlight errors
             }
-        } else if (isAddedLine && isDocblockLine) {
-            el.innerHTML = '<span class="hljs-comment">' + el.textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
+        } else if (isAddedLine && specialCommentType) {
+            el.innerHTML = '<span class="comment-marker comment-' + specialCommentType.toLowerCase() + '">' + el.textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
             el.classList.add('hljs');
         }
     });

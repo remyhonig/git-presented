@@ -496,6 +496,7 @@ pre code {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     color: var(--text-primary);
+    text-align: left;
 }
 .prose ol {
     list-style-type: decimal;
@@ -503,12 +504,14 @@ pre code {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     color: var(--text-primary);
+    text-align: left;
 }
 .prose li {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     line-height: 1.5;
     color: var(--text-primary);
+    text-align: left;
 }
 .prose li > ul,
 .prose li > ol {
@@ -691,30 +694,43 @@ pre code {
     margin-bottom: 0.5rem !important;
 }
 
-/* Comment highlighting in diffs - callout/bubble style for ADDED lines only */
-tr.bg-green-50 .diff-line-content .hljs-comment,
-tr.diff-add .diff-line-content .hljs-comment {
-    color: var(--comment-bubble-text, #854d0e) !important;
+/* Special comment markers: // INFO:, // WARN:, // DANGER: */
+.comment-marker {
     font-style: normal;
     font-weight: 500;
-    background: var(--comment-bubble-bg, linear-gradient(135deg, #fef9c3 0%, #fefce8 100%));
-    border: 1px solid var(--comment-bubble-border, #fcd34d);
-    border-left: 3px solid var(--comment-bubble-accent, #eab308);
     padding: 0.15em 0.5em;
     border-radius: 0.25rem;
     margin: 0 0.1em;
-    box-shadow: var(--comment-bubble-shadow, 0 1px 2px rgba(234, 179, 8, 0.15));
     display: inline;
+    border: 1px solid;
+    border-left-width: 3px;
 }
 
-/* Style doctags within comments */
-tr.bg-green-50 .diff-line-content .hljs-doctag,
-tr.diff-add .diff-line-content .hljs-doctag {
-    color: var(--comment-doctag-text, #92400e) !important;
-    font-weight: 700;
-    background-color: var(--comment-doctag-bg, rgba(251, 191, 36, 0.3));
-    padding: 0.1em 0.3em;
-    border-radius: 0.2rem;
+/* INFO: - Blue/Cyan style */
+.comment-info {
+    color: var(--comment-info-text, #0c4a6e) !important;
+    background: var(--comment-info-bg, linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%));
+    border-color: var(--comment-info-border, #7dd3fc);
+    border-left-color: var(--comment-info-accent, #0ea5e9);
+    box-shadow: 0 1px 2px rgba(14, 165, 233, 0.15);
+}
+
+/* WARN: - Yellow/Amber style */
+.comment-warn {
+    color: var(--comment-warn-text, #854d0e) !important;
+    background: var(--comment-warn-bg, linear-gradient(135deg, #fef9c3 0%, #fefce8 100%));
+    border-color: var(--comment-warn-border, #fcd34d);
+    border-left-color: var(--comment-warn-accent, #eab308);
+    box-shadow: 0 1px 2px rgba(234, 179, 8, 0.15);
+}
+
+/* DANGER: - Red style */
+.comment-danger {
+    color: var(--comment-danger-text, #991b1b) !important;
+    background: var(--comment-danger-bg, linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%));
+    border-color: var(--comment-danger-border, #fca5a5);
+    border-left-color: var(--comment-danger-accent, #ef4444);
+    box-shadow: 0 1px 2px rgba(239, 68, 68, 0.15);
 }
 
 /* Context lines - keep comments subtle */
