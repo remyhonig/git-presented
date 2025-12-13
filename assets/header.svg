@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#f97316"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="200" fill="url(#bg)"/>
+
+  <!-- Git branch visualization -->
+  <g stroke="#4a5568" stroke-width="3" fill="none" opacity="0.3">
+    <!-- Main line -->
+    <path d="M 50 100 L 750 100"/>
+    <!-- Branch 1 -->
+    <path d="M 200 100 Q 220 60 280 60 L 400 60 Q 420 60 440 100"/>
+    <!-- Branch 2 -->
+    <path d="M 500 100 Q 520 140 580 140 L 650 140"/>
+  </g>
+
+  <!-- Commit dots -->
+  <g fill="url(#accent)">
+    <circle cx="100" cy="100" r="8"/>
+    <circle cx="200" cy="100" r="8"/>
+    <circle cx="300" cy="60" r="8"/>
+    <circle cx="400" cy="60" r="8"/>
+    <circle cx="440" cy="100" r="8"/>
+    <circle cx="500" cy="100" r="8"/>
+    <circle cx="580" cy="140" r="8"/>
+    <circle cx="650" cy="140" r="8"/>
+    <circle cx="700" cy="100" r="8"/>
+  </g>
+
+  <!-- Presentation tag markers -->
+  <g fill="#10b981">
+    <rect x="190" y="70" width="20" height="14" rx="2"/>
+    <rect x="490" y="110" width="20" height="14" rx="2"/>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="700" fill="#ffffff">
+    Git Presented
+  </text>
+
+  <!-- Tagline -->
+  <text x="400" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#a0aec0">
+    Turn commits into presentations
+  </text>
+</svg>

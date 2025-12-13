@@ -1,0 +1,90 @@
+/* Theme: Schiphol - Airport style inspired by schiphol.nl
+
+   This theme only needs to define ~20 palette colors.
+   All component styles (diffs, code blocks, badges) are
+   automatically derived from the palette in main.css.
+*/
+
+[data-theme="schiphol"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces - Schiphol teal/blue tones */
+    --palette-surface: #3d4f4f;          /* Main background - dark teal */
+    --palette-surface-elevated: #2d3c3c; /* Headers, cards */
+    --palette-surface-sunken: #4a5f5f;   /* Inset areas */
+
+    /* Text hierarchy */
+    --palette-text: #ffffff;             /* Primary text - white */
+    --palette-text-secondary: #deeef4;   /* Secondary text */
+    --palette-text-muted: #7a9999;       /* Subtle text, line numbers */
+
+    /* Accents - Schiphol orange and gold */
+    --palette-accent: #e87722;           /* Primary accent - Schiphol orange */
+    --palette-accent-secondary: #c9a227; /* Secondary - Schiphol gold */
+    --palette-success: #4ade80;          /* Success states */
+    --palette-warning: #c9a227;          /* Warning - use gold */
+    --palette-danger: #f87171;           /* Error/danger states */
+
+    /* Borders */
+    --palette-border: #4a5f5f;           /* Subtle borders */
+    --palette-border-strong: #5a7070;    /* Emphasized borders */
+
+    /* Code surface - Light Schiphol blue (inverted for readability) */
+    --palette-code-surface: #d4e5ed;     /* Light blue code blocks */
+    --palette-code-text: #1a2626;        /* Dark text on light code */
+
+    /* Diff colors - Dark theme: dark backgrounds with light text */
+    --palette-diff-add-bg: #1a3d1a;                /* Dark green */
+    --palette-diff-add-bg-hover: #245824;          /* Slightly lighter on hover */
+    --palette-diff-add-bg-intense: #0d2d0d;        /* Line number cells */
+    --palette-diff-add-text: #a8e6a8;              /* Light green text */
+
+    --palette-diff-del-bg: #4a2a1a;                /* Dark orange-brown */
+    --palette-diff-del-bg-hover: #5c3820;          /* Slightly lighter on hover */
+    --palette-diff-del-bg-intense: #3d1f10;        /* Line number cells */
+    --palette-diff-del-text: #ffb088;              /* Light orange text */
+
+    /* Syntax highlighting - for dark diff backgrounds */
+    --palette-syntax-keyword: #ff79c6;   /* Pink */
+    --palette-syntax-string: #f1fa8c;    /* Yellow */
+    --palette-syntax-number: #bd93f9;    /* Purple */
+    --palette-syntax-type: #8be9fd;      /* Cyan */
+    --palette-syntax-comment: #6272a4;   /* Muted blue */
+    --palette-syntax-variable: #ffb86c;  /* Orange */
+    --palette-syntax-function: #50fa7b;  /* Green */
+    --palette-syntax-tag: #ff5555;       /* Red */
+
+    /* === DERIVED OVERRIDES === */
+
+    /* Shadows for dark theme */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+    /* Gradients */
+    --gradient-title: linear-gradient(135deg, #c9a227 0%, #e87722 100%);
+    --gradient-bg: linear-gradient(180deg, #3d4f4f 0%, #2d3c3c 100%);
+    --gradient-accent: linear-gradient(135deg, #e87722 0%, #c9a227 100%);
+
+    /* Comment bubble - Schiphol teal style (distinct from orange deleted lines) */
+    --comment-bubble-text: #e0f7fa;
+    --comment-bubble-bg: linear-gradient(135deg, #004d5a 0%, #006670 100%);
+    --comment-bubble-border: #00838f;
+    --comment-bubble-accent: #26c6da;
+    --comment-bubble-shadow: 0 1px 3px rgba(0, 131, 143, 0.3);
+    --comment-doctag-text: #80deea;
+    --comment-doctag-bg: rgba(38, 198, 218, 0.25);
+
+    --hljs-mode: dark;
+
+    /* Typography */
+    --font-family-sans: 'Inter', system-ui, sans-serif;
+    --font-family-mono: 'JetBrains Mono', monospace;
+    --font-title: clamp(2rem, 5vw, 4rem);
+    --font-heading: clamp(1.5rem, 3.5vw, 2.5rem);
+    --font-prose: clamp(1rem, 2.5vw, 1.75rem);
+    --font-code: clamp(0.8rem, 1.2vw, 1.1rem);
+    --font-code-snippet: 1rem;
+    --line-height-prose: 1.6;
+    --line-height-code: 1.8;
+}

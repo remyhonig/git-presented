@@ -1,0 +1,87 @@
+/* Theme: Symfony - Light theme inspired by sensiolabs.com
+
+   This theme only needs to define ~20 palette colors.
+   All component styles are automatically derived in main.css.
+*/
+
+[data-theme="symfony"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces */
+    --palette-surface: #ffffff;
+    --palette-surface-elevated: #f8f9fa;
+    --palette-surface-sunken: #e9ecef;
+
+    /* Text hierarchy */
+    --palette-text: #1a1a1a;
+    --palette-text-secondary: #495057;
+    --palette-text-muted: #adb5bd;
+
+    /* Accents - Symfony/SensioLabs green */
+    --palette-accent: #7eba27;
+    --palette-accent-secondary: #6ca521;
+    --palette-success: #7eba27;
+    --palette-warning: #ffc107;
+    --palette-danger: #dc3545;
+
+    /* Borders */
+    --palette-border: #dee2e6;
+    --palette-border-strong: #ced4da;
+
+    /* Code surface */
+    --palette-code-surface: #1a1a1a;
+    --palette-code-text: #f8f9fa;
+
+    /* Diff colors - Symfony green themed */
+    --palette-diff-add-bg: #f4fce3;
+    --palette-diff-add-bg-hover: #e9fac8;
+    --palette-diff-add-bg-intense: #e9fac8;
+    --palette-diff-add-text: #5c940d;
+
+    --palette-diff-del-bg: #fff5f5;
+    --palette-diff-del-bg-hover: #ffe3e3;
+    --palette-diff-del-bg-intense: #ffe3e3;
+    --palette-diff-del-text: #c92a2a;
+
+    /* Syntax highlighting - Symfony green accent */
+    --palette-syntax-keyword: #7eba27;
+    --palette-syntax-string: #c92a2a;
+    --palette-syntax-number: #1864ab;
+    --palette-syntax-type: #862e9c;
+    --palette-syntax-comment: #868e96;
+    --palette-syntax-variable: #e67700;
+    --palette-syntax-function: #862e9c;
+    --palette-syntax-tag: #364fc7;
+
+    /* === DERIVED OVERRIDES === */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    --gradient-title: linear-gradient(135deg, #1a1a1a 0%, #495057 100%);
+    --gradient-bg: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    --gradient-accent: linear-gradient(135deg, #7eba27 0%, #6ca521 100%);
+
+    /* Comment bubble - Symfony/SensioLabs green style */
+    --comment-bubble-text: #3d5c0f;
+    --comment-bubble-bg: linear-gradient(135deg, #f0f9e8 0%, #e3f2d3 100%);
+    --comment-bubble-border: #a3d977;
+    --comment-bubble-accent: #7eba27;
+    --comment-bubble-shadow: 0 1px 2px rgba(126, 186, 39, 0.15);
+    --comment-doctag-text: #5a8a1a;
+    --comment-doctag-bg: rgba(126, 186, 39, 0.2);
+
+    --hljs-mode: light;
+
+    /* Typography */
+    --font-family-sans: 'Inter', system-ui, sans-serif;
+    --font-family-mono: 'JetBrains Mono', monospace;
+    --font-title: clamp(1.5rem, 4vw, 3rem);
+    --font-heading: clamp(1.25rem, 3vw, 2rem);
+    --font-prose: clamp(0.9rem, 2vw, 1.25rem);
+    --font-code: clamp(0.7rem, 1vw, 0.9rem);
+    --font-code-snippet: 0.8rem;
+    --line-height-prose: 1.7;
+    --line-height-code: 1.5;
+}

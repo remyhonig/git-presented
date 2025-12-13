@@ -1,0 +1,87 @@
+/* Theme: Presentation - Bold conference style, projector-optimized
+
+   This theme only needs to define ~20 palette colors.
+   All component styles are automatically derived in main.css.
+*/
+
+[data-theme="presentation"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces - Deep dark for high contrast on projectors */
+    --palette-surface: #18181b;
+    --palette-surface-elevated: #27272a;
+    --palette-surface-sunken: #3f3f46;
+
+    /* Text hierarchy - High contrast for visibility */
+    --palette-text: #fafafa;
+    --palette-text-secondary: #d4d4d8;
+    --palette-text-muted: #71717a;
+
+    /* Accents - Bold amber/gold for visibility */
+    --palette-accent: #fbbf24;
+    --palette-accent-secondary: #f59e0b;
+    --palette-success: #34d399;
+    --palette-warning: #fbbf24;
+    --palette-danger: #f87171;
+
+    /* Borders */
+    --palette-border: #3f3f46;
+    --palette-border-strong: #52525b;
+
+    /* Code surface */
+    --palette-code-surface: #09090b;
+    --palette-code-text: #e4e4e7;
+
+    /* Diff colors - High visibility for projectors */
+    --palette-diff-add-bg: rgba(52, 211, 153, 0.18);
+    --palette-diff-add-bg-hover: rgba(52, 211, 153, 0.28);
+    --palette-diff-add-bg-intense: rgba(52, 211, 153, 0.22);
+    --palette-diff-add-text: #6ee7b7;
+
+    --palette-diff-del-bg: rgba(248, 113, 113, 0.18);
+    --palette-diff-del-bg-hover: rgba(248, 113, 113, 0.28);
+    --palette-diff-del-bg-intense: rgba(248, 113, 113, 0.22);
+    --palette-diff-del-text: #fca5a5;
+
+    /* Syntax highlighting - GitHub dark */
+    --palette-syntax-keyword: #ff7b72;
+    --palette-syntax-string: #a5d6ff;
+    --palette-syntax-number: #79c0ff;
+    --palette-syntax-type: #d2a8ff;
+    --palette-syntax-comment: #8b949e;
+    --palette-syntax-variable: #ffa657;
+    --palette-syntax-function: #d2a8ff;
+    --palette-syntax-tag: #7ee787;
+
+    /* === DERIVED OVERRIDES === */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+
+    --gradient-title: linear-gradient(135deg, #fafafa 0%, #fbbf24 100%);
+    --gradient-bg: linear-gradient(180deg, #18181b 0%, #09090b 100%);
+    --gradient-accent: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+
+    /* Comment bubble - Bold amber/gold style */
+    --comment-bubble-text: #fef3c7;
+    --comment-bubble-bg: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+    --comment-bubble-border: #d97706;
+    --comment-bubble-accent: #fbbf24;
+    --comment-bubble-shadow: 0 2px 4px rgba(251, 191, 36, 0.25);
+    --comment-doctag-text: #fcd34d;
+    --comment-doctag-bg: rgba(251, 191, 36, 0.3);
+
+    --hljs-mode: dark;
+
+    /* Typography - Bold for projectors */
+    --font-family-sans: 'Space Grotesk', system-ui, sans-serif;
+    --font-family-mono: 'IBM Plex Mono', monospace;
+    --font-title: clamp(2rem, 5vw, 4rem);
+    --font-heading: clamp(1.5rem, 3.5vw, 2.5rem);
+    --font-prose: clamp(1rem, 2.5vw, 1.75rem);
+    --font-code: clamp(0.8rem, 1.2vw, 1.1rem);
+    --font-code-snippet: 1rem;
+    --line-height-prose: 1.6;
+    --line-height-code: 1.8;
+}

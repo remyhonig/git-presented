@@ -1,0 +1,87 @@
+/* Theme: Laravel - Light theme inspired by laravel.com
+
+   This theme only needs to define ~20 palette colors.
+   All component styles are automatically derived in main.css.
+*/
+
+[data-theme="laravel"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces */
+    --palette-surface: #ffffff;
+    --palette-surface-elevated: #f9fafb;
+    --palette-surface-sunken: #f3f4f6;
+
+    /* Text hierarchy */
+    --palette-text: #111827;
+    --palette-text-secondary: #374151;
+    --palette-text-muted: #9ca3af;
+
+    /* Accents - Laravel red */
+    --palette-accent: #ff2d20;
+    --palette-accent-secondary: #e7241a;
+    --palette-success: #22c55e;
+    --palette-warning: #f59e0b;
+    --palette-danger: #ff2d20;
+
+    /* Borders */
+    --palette-border: #e5e7eb;
+    --palette-border-strong: #d1d5db;
+
+    /* Code surface */
+    --palette-code-surface: #1f2937;
+    --palette-code-text: #f9fafb;
+
+    /* Diff colors - Laravel themed */
+    --palette-diff-add-bg: #f0fdf4;
+    --palette-diff-add-bg-hover: #dcfce7;
+    --palette-diff-add-bg-intense: #dcfce7;
+    --palette-diff-add-text: #15803d;
+
+    --palette-diff-del-bg: #fef2f2;
+    --palette-diff-del-bg-hover: #fee2e2;
+    --palette-diff-del-bg-intense: #fee2e2;
+    --palette-diff-del-text: #ff2d20;
+
+    /* Syntax highlighting - GitHub light with Laravel red accent */
+    --palette-syntax-keyword: #ff2d20;
+    --palette-syntax-string: #0a3069;
+    --palette-syntax-number: #0550ae;
+    --palette-syntax-type: #8250df;
+    --palette-syntax-comment: #6b7280;
+    --palette-syntax-variable: #cf222e;
+    --palette-syntax-function: #8250df;
+    --palette-syntax-tag: #116329;
+
+    /* === DERIVED OVERRIDES === */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    --gradient-title: linear-gradient(135deg, #111827 0%, #ff2d20 100%);
+    --gradient-bg: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+    --gradient-accent: linear-gradient(135deg, #ff2d20 0%, #e7241a 100%);
+
+    /* Comment bubble - Laravel red style */
+    --comment-bubble-text: #991b1b;
+    --comment-bubble-bg: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    --comment-bubble-border: #fca5a5;
+    --comment-bubble-accent: #ff2d20;
+    --comment-bubble-shadow: 0 1px 2px rgba(255, 45, 32, 0.1);
+    --comment-doctag-text: #dc2626;
+    --comment-doctag-bg: rgba(255, 45, 32, 0.15);
+
+    --hljs-mode: light;
+
+    /* Typography */
+    --font-family-sans: 'Figtree', system-ui, sans-serif;
+    --font-family-mono: 'Fira Code', monospace;
+    --font-title: clamp(1.5rem, 4vw, 3rem);
+    --font-heading: clamp(1.25rem, 3vw, 2rem);
+    --font-prose: clamp(0.9rem, 2vw, 1.25rem);
+    --font-code: clamp(0.7rem, 1vw, 0.9rem);
+    --font-code-snippet: 0.8rem;
+    --line-height-prose: 1.7;
+    --line-height-code: 1.5;
+}

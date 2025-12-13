@@ -1,0 +1,1163 @@
+/* =====================================================
+   SEMANTIC COLOR PALETTE SYSTEM
+
+   Themes only need to define these ~20 palette colors.
+   All component styles (diffs, code blocks, etc.) are
+   automatically derived from the palette.
+   ===================================================== */
+
+:root {
+    /* === CORE PALETTE (themes override these) === */
+
+    /* Surfaces - layered backgrounds */
+    --palette-surface: #ffffff;          /* Main background */
+    --palette-surface-elevated: #f8fafc; /* Cards, headers, raised elements */
+    --palette-surface-sunken: #f1f5f9;   /* Inset areas, code backgrounds */
+
+    /* Text hierarchy */
+    --palette-text: #1e293b;             /* Primary text */
+    --palette-text-secondary: #475569;   /* Secondary text */
+    --palette-text-muted: #94a3b8;       /* Subtle text, line numbers */
+
+    /* Accents */
+    --palette-accent: #3b82f6;           /* Primary accent (links, buttons) */
+    --palette-accent-secondary: #6366f1; /* Secondary accent */
+    --palette-success: #22c55e;          /* Success states */
+    --palette-warning: #f59e0b;          /* Warning states */
+    --palette-danger: #ef4444;           /* Error/danger states */
+
+    /* Borders */
+    --palette-border: #e2e8f0;           /* Subtle borders */
+    --palette-border-strong: #cbd5e1;    /* Emphasized borders */
+
+    /* Code surface (can be light or dark) */
+    --palette-code-surface: #1e293b;     /* Code block background */
+    --palette-code-text: #f1f5f9;        /* Code block text */
+
+    /* Diff colors - additions */
+    --palette-diff-add-bg: rgba(34, 197, 94, 0.12);
+    --palette-diff-add-bg-hover: rgba(34, 197, 94, 0.20);
+    --palette-diff-add-bg-intense: rgba(34, 197, 94, 0.18);
+    --palette-diff-add-text: #166534;
+
+    /* Diff colors - deletions */
+    --palette-diff-del-bg: rgba(239, 68, 68, 0.12);
+    --palette-diff-del-bg-hover: rgba(239, 68, 68, 0.20);
+    --palette-diff-del-bg-intense: rgba(239, 68, 68, 0.18);
+    --palette-diff-del-text: #991b1b;
+
+    /* Syntax highlighting */
+    --palette-syntax-keyword: #d73a49;
+    --palette-syntax-string: #032f62;
+    --palette-syntax-number: #005cc5;
+    --palette-syntax-type: #6f42c1;
+    --palette-syntax-comment: #6a737d;
+    --palette-syntax-variable: #e36209;
+    --palette-syntax-function: #6f42c1;
+    --palette-syntax-tag: #22863a;
+
+    /* === DERIVED VARIABLES (computed from palette) === */
+
+    /* These map palette to semantic usage - themes shouldn't override */
+    --bg-primary: var(--palette-surface);
+    --bg-secondary: var(--palette-surface-elevated);
+    --bg-tertiary: var(--palette-surface-sunken);
+    --bg-header: var(--palette-surface-elevated);
+    --bg-footer: var(--palette-surface-elevated);
+    --bg-card: var(--palette-surface);
+    --bg-code: var(--palette-surface-sunken);
+    --bg-code-block: var(--palette-code-surface);
+
+    --text-primary: var(--palette-text);
+    --text-secondary: var(--palette-text-secondary);
+    --text-tertiary: var(--palette-text-secondary);
+    --text-muted: var(--palette-text-muted);
+    --text-inverse: var(--palette-surface);
+
+    --accent-primary: var(--palette-accent);
+    --accent-secondary: var(--palette-accent-secondary);
+    --accent-success: var(--palette-success);
+    --accent-warning: var(--palette-warning);
+    --accent-danger: var(--palette-danger);
+
+    --border-primary: var(--palette-border);
+    --border-secondary: var(--palette-border-strong);
+
+    --code-text: var(--palette-accent-secondary);
+    --code-bg: var(--palette-surface-sunken);
+
+    --progress-bg: var(--palette-surface-sunken);
+    --progress-fill: var(--palette-accent);
+
+    /* Shadows - themes can override for light/dark modes */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    /* Gradients derived from palette */
+    --gradient-title: linear-gradient(135deg, var(--palette-text) 0%, var(--palette-text-secondary) 100%);
+    --gradient-bg: linear-gradient(180deg, var(--palette-surface) 0%, var(--palette-surface-elevated) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--palette-accent) 0%, var(--palette-accent-secondary) 100%);
+
+    /* Comment bubble styling */
+    --comment-bubble-text: #854d0e;
+    --comment-bubble-bg: linear-gradient(135deg, #fef9c3 0%, #fefce8 100%);
+    --comment-bubble-border: #fcd34d;
+    --comment-bubble-accent: #eab308;
+    --comment-bubble-shadow: 0 1px 2px rgba(234, 179, 8, 0.15);
+    --comment-doctag-text: #92400e;
+    --comment-doctag-bg: rgba(251, 191, 36, 0.3);
+
+    --hljs-mode: light;
+
+    /* Typography defaults */
+    --font-family-sans: 'Inter', system-ui, sans-serif;
+    --font-family-mono: 'JetBrains Mono', monospace;
+    --font-title: clamp(1.5rem, 4vw, 3rem);
+    --font-heading: clamp(1.25rem, 3vw, 2rem);
+    --font-prose: clamp(0.9rem, 2vw, 1.25rem);
+    --font-code: clamp(0.7rem, 1vw, 0.9rem);
+    --font-code-snippet: 0.8rem;
+    --line-height-prose: 1.7;
+    --line-height-code: 1.5;
+}
+
+/* =====================================================
+   DISPLAY MODE - Browser mode
+   (Beamer mode overrides are at end of file to override themes)
+   ===================================================== */
+
+/* Browser mode - compact fonts for dense content */
+[data-mode="browser"] {
+    --font-title: clamp(1.25rem, 3vw, 2.25rem);
+    --font-heading: clamp(1rem, 2.5vw, 1.5rem);
+    --font-prose: clamp(0.85rem, 1.5vw, 1rem);
+    --font-code: clamp(0.7rem, 1vw, 0.85rem);
+    --font-code-snippet: 0.75rem;
+    --line-height-prose: 1.5;
+    --line-height-code: 1.4;
+}
+
+/* =====================================================
+   BASE STYLES USING CSS VARIABLES
+   ===================================================== */
+
+html {
+    font-family: var(--font-family-sans);
+}
+
+body {
+    background: var(--gradient-bg);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Theme indicator toast */
+.theme-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-primary);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.theme-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.theme-toast kbd {
+    background: var(--bg-tertiary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-family: var(--font-family-mono);
+    border: 1px solid var(--border-secondary);
+}
+
+/* Inline settings buttons for navigation - hidden by default, shown on header hover */
+.settings-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* Fixed width for theme and mode buttons to prevent layout shift when cycling */
+#nav-theme-btn,
+#nav-mode-btn {
+    min-width: 6.5rem;
+    justify-content: center;
+}
+
+.settings-btn:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-primary);
+}
+
+.settings-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+/* Show settings buttons on header hover */
+header:hover .settings-buttons {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Copyable elements styling */
+.copyable {
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+}
+
+/* Inline code needs inline-block for transform to work */
+code.copyable {
+    display: inline-block;
+}
+
+/* Hover: selection-like highlight */
+.copyable:hover {
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb, 96, 165, 250), 0.3);
+    border-radius: 0.25rem;
+}
+
+/* Click: spring animation */
+@keyframes copy-spring {
+    0% { transform: scale(1); }
+    30% { transform: scale(0.97); }
+    60% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+}
+
+.copyable.copied {
+    animation: copy-spring 0.25s ease-out;
+}
+
+/* Copyable code blocks */
+.prose pre.copyable:hover {
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb, 96, 165, 250), 0.3);
+}
+
+/* =====================================================
+   COMPONENT STYLES USING CSS VARIABLES
+   ===================================================== */
+
+/* Custom styles for presentation */
+.slide-container {
+    min-height: calc(100vh - 120px);
+    background: var(--bg-primary);
+}
+
+/* Header styling */
+.slide-header {
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border-primary);
+    backdrop-filter: blur(8px);
+}
+
+/* Header title/settings swap on hover */
+.header-title {
+    transition: opacity 0.15s ease;
+}
+.header-settings {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+.slide-header:hover .header-title {
+    opacity: 0;
+    pointer-events: none;
+}
+.slide-header:hover .header-settings {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Footer styling */
+.slide-footer {
+    background: var(--bg-footer);
+    border-top: 1px solid var(--border-primary);
+}
+
+/* Progress bar */
+.progress-bar-bg {
+    background: var(--progress-bg);
+}
+.progress-bar-fill {
+    background: var(--progress-fill);
+}
+
+/* Diff colors - always consistent for readability */
+.diff-add { background-color: rgba(34, 197, 94, 0.15); }
+.diff-del { background-color: rgba(239, 68, 68, 0.15); }
+.diff-hunk { background-color: var(--bg-tertiary); color: var(--text-tertiary); }
+
+pre code {
+    display: block;
+    overflow-x: auto;
+    padding: 1rem;
+    font-size: 0.875rem;
+    font-family: var(--font-family-mono);
+}
+
+.tree-line::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-primary);
+}
+
+/* Prose styling for commit messages */
+.prose h3 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-top: 1.5em !important;
+    margin-bottom: 0.5em !important;
+}
+.prose h4 {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-top: 1.25em !important;
+    margin-bottom: 0.25em !important;
+}
+
+/* Slide styling */
+.slide {
+    scroll-snap-align: start;
+    position: relative;
+    background: var(--bg-primary);
+}
+
+/* Slide navigation arrows */
+.slide-nav-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    border: 2px solid var(--border-primary);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow-sm);
+}
+.slide.current-slide .slide-nav-arrow {
+    opacity: 0.7;
+    pointer-events: auto;
+}
+.slide-nav-arrow:hover {
+    opacity: 1;
+    background: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateX(-50%) scale(1.1);
+}
+.slide-nav-up {
+    top: 1rem;
+}
+.slide-nav-down {
+    bottom: 1rem;
+}
+#slides-container {
+    scroll-snap-type: y proximity;
+}
+
+/* Two-column slide layout */
+.slide-two-column .slide-grid {
+    min-height: calc(100vh - 12rem);
+}
+.slide-two-column .slide-prose {
+    align-self: start;
+}
+.slide-two-column .slide-code {
+    max-height: calc(100vh - 14rem);
+    overflow: auto;
+}
+.slide-two-column .slide-code .code-snippet {
+    max-height: calc(100vh - 14rem);
+}
+
+/* Code snippet styling */
+.code-snippet {
+    overflow: visible;
+    background: var(--bg-code);
+    border: 1px solid var(--border-primary);
+    border-radius: 0.5rem;
+}
+.code-snippet .flex-1 {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+.code-snippet table {
+    border-collapse: collapse;
+    min-width: 100%;
+    table-layout: auto;
+}
+.code-snippet code {
+    font-size: var(--font-code-snippet);
+    line-height: var(--line-height-code);
+    display: inline;
+    white-space: pre;
+    font-family: var(--font-family-mono);
+    background: transparent !important;
+}
+.code-snippet code.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+}
+.code-snippet tr {
+    height: auto;
+    line-height: 1.15;
+}
+.code-snippet td {
+    padding: 1px 2px;
+    vertical-align: top;
+    line-height: 1.15;
+}
+.code-snippet td:first-child {
+    padding-right: 4px;
+    white-space: nowrap;
+    width: 1%;
+    color: var(--text-muted);
+}
+.code-snippet td:last-child {
+    width: 99%;
+}
+
+/* Prose styling */
+.prose h1 {
+    color: var(--text-primary);
+}
+.prose h2 {
+    color: var(--text-primary);
+}
+.prose h3 {
+    color: var(--text-primary);
+}
+.prose h4 {
+    color: var(--text-secondary);
+}
+.prose p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+.prose > p:first-child {
+    margin-top: 0;
+}
+.prose strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.prose ul {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--text-primary);
+}
+.prose ol {
+    list-style-type: decimal;
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--text-primary);
+}
+.prose li {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+.prose li > ul,
+.prose li > ol {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+.prose pre {
+    background-color: var(--bg-code-block);
+    color: var(--text-inverse);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    box-shadow: var(--shadow-md);
+}
+.prose code {
+    background-color: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    color: var(--code-text);
+    font-family: var(--font-family-mono);
+}
+.prose pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: 0.85em;
+}
+.prose a {
+    color: var(--accent-primary);
+    text-decoration: underline;
+}
+.prose a:hover {
+    color: var(--accent-secondary);
+}
+.prose blockquote {
+    border-left: 4px solid var(--accent-primary);
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--text-tertiary);
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+/* Title markdown styling - inline the p tag content */
+.prose-title p {
+    display: inline;
+    margin: 0;
+}
+.prose-title code {
+    background-color: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 0.375rem;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--code-text);
+}
+
+/* Overview page prose - smaller headings for preview */
+.overview-prose h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    color: var(--text-primary);
+}
+.overview-prose h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    color: var(--text-primary);
+}
+.overview-prose h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5em;
+    margin-bottom: 0.25em;
+    color: var(--text-secondary);
+}
+.overview-prose p {
+    font-size: 0.95rem;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.overview-prose ul,
+.overview-prose ol {
+    font-size: 0.95rem;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.overview-prose li {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+.overview-prose code {
+    font-size: 0.85rem;
+}
+
+/* Gradient title text */
+.gradient-title {
+    background: var(--gradient-title);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Viewport-responsive slide typography - uses theme variables */
+.slide-title {
+    font-size: var(--font-title) !important;
+    line-height: 1.1 !important;
+    color: var(--text-primary);
+}
+.slide-heading {
+    font-size: var(--font-heading) !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    color: var(--text-primary);
+}
+.slide-prose,
+.slide-prose.prose {
+    font-size: var(--font-prose) !important;
+    line-height: var(--line-height-prose) !important;
+}
+.slide-prose p,
+.slide-prose.prose p {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin-top: 0.75em !important;
+    margin-bottom: 0.75em !important;
+}
+.slide-prose li,
+.slide-prose.prose li {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin-top: 0.4em !important;
+    margin-bottom: 0.4em !important;
+}
+.slide-prose ul,
+.slide-prose ol,
+.slide-prose.prose ul,
+.slide-prose.prose ol {
+    margin-top: clamp(0.75rem, 1.5vw, 1.25rem) !important;
+    margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem) !important;
+}
+.slide-prose code,
+.slide-prose.prose code {
+    font-size: 0.9em !important;
+}
+
+/* Responsive spacing for slides */
+.slide-padding {
+    padding: clamp(1.5rem, 4vw, 3rem);
+}
+.slide-mb {
+    margin-bottom: clamp(1rem, 3vw, 2rem) !important;
+}
+
+/* Browser mode - tighter spacing */
+[data-mode="browser"] .slide-mb {
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem) !important;
+}
+[data-mode="browser"] .slide-prose p,
+[data-mode="browser"] .slide-prose.prose p {
+    margin-top: 0.4em !important;
+    margin-bottom: 0.4em !important;
+}
+[data-mode="browser"] .slide-prose li,
+[data-mode="browser"] .slide-prose.prose li {
+    margin-top: 0.2em !important;
+    margin-bottom: 0.2em !important;
+}
+[data-mode="browser"] .slide-prose ul,
+[data-mode="browser"] .slide-prose ol,
+[data-mode="browser"] .slide-prose.prose ul,
+[data-mode="browser"] .slide-prose.prose ol {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Comment highlighting in diffs - callout/bubble style for ADDED lines only */
+tr.bg-green-50 .diff-line-content .hljs-comment,
+tr.diff-add .diff-line-content .hljs-comment {
+    color: var(--comment-bubble-text, #854d0e) !important;
+    font-style: normal;
+    font-weight: 500;
+    background: var(--comment-bubble-bg, linear-gradient(135deg, #fef9c3 0%, #fefce8 100%));
+    border: 1px solid var(--comment-bubble-border, #fcd34d);
+    border-left: 3px solid var(--comment-bubble-accent, #eab308);
+    padding: 0.15em 0.5em;
+    border-radius: 0.25rem;
+    margin: 0 0.1em;
+    box-shadow: var(--comment-bubble-shadow, 0 1px 2px rgba(234, 179, 8, 0.15));
+    display: inline;
+}
+
+/* Style doctags within comments */
+tr.bg-green-50 .diff-line-content .hljs-doctag,
+tr.diff-add .diff-line-content .hljs-doctag {
+    color: var(--comment-doctag-text, #92400e) !important;
+    font-weight: 700;
+    background-color: var(--comment-doctag-bg, rgba(251, 191, 36, 0.3));
+    padding: 0.1em 0.3em;
+    border-radius: 0.2rem;
+}
+
+/* Context lines - keep comments subtle */
+tr:not(.bg-green-50):not(.bg-red-50):not(.diff-add):not(.diff-del) .diff-line-content .hljs-comment {
+    color: var(--text-muted) !important;
+    font-style: italic;
+}
+
+/* Removed lines - grey muted comments */
+tr.bg-red-50 .diff-line-content .hljs-comment,
+tr.bg-red-50 .diff-line-content .hljs-doctag,
+tr.diff-del .diff-line-content .hljs-comment,
+tr.diff-del .diff-line-content .hljs-doctag {
+    color: var(--text-muted) !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Override highlight.js to preserve diff coloring */
+.diff-line-content .hljs {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Card styling */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Button styling */
+.btn-primary {
+    background: var(--gradient-accent);
+    color: var(--text-inverse);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Navigation links */
+.nav-link {
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+.nav-link:hover {
+    color: var(--accent-primary);
+}
+
+/* Files section */
+.files-section {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-primary);
+}
+
+/* =====================================================
+   DIFF VIEWER THEME STYLES
+   ===================================================== */
+
+/* Diff file container */
+.diff-file-compact {
+    background: var(--bg-card);
+    border-color: var(--border-primary) !important;
+}
+
+/* Diff file header */
+.diff-file-header {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
+}
+
+.diff-file-header .font-mono {
+    color: var(--text-primary) !important;
+}
+
+/* View toggle button - subtle cycling button */
+.view-toggle-btn {
+    background: var(--bg-tertiary) !important;
+    border-color: var(--border-primary) !important;
+    color: var(--text-secondary) !important;
+    min-width: 3.5rem;
+    text-align: center;
+}
+
+.view-toggle-btn:hover {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Diff hunks container */
+.diff-hunks {
+    background: var(--bg-card) !important;
+}
+
+/* Diff table styling */
+.diff-file-compact table {
+    background: var(--bg-card);
+}
+
+/* Line number columns */
+.diff-file-compact td.text-gray-400 {
+    color: var(--text-muted) !important;
+    border-color: var(--border-primary) !important;
+}
+
+.diff-file-compact td.bg-gray-50,
+.diff-file-compact td[class*="bg-gray-50"] {
+    background: var(--bg-secondary) !important;
+}
+
+/* Added lines - use palette colors */
+.diff-file-compact tr.bg-green-50,
+.diff-file-compact tr[class*="bg-green-50"] {
+    background: var(--palette-diff-add-bg) !important;
+}
+
+.diff-file-compact tr.bg-green-50:hover,
+.diff-file-compact tr[class*="bg-green-50"]:hover {
+    background: var(--palette-diff-add-bg-hover) !important;
+}
+
+.diff-file-compact tr.bg-green-50 td.bg-green-100\/50,
+.diff-file-compact tr.bg-green-50 td[class*="bg-green-100"] {
+    background: var(--palette-diff-add-bg-intense) !important;
+}
+
+.diff-file-compact tr.bg-green-50 td.text-green-700 {
+    color: var(--palette-diff-add-text) !important;
+}
+
+.diff-file-compact tr.bg-green-50 .text-green-900 {
+    color: var(--palette-text) !important;
+}
+
+/* Removed lines - use palette colors */
+.diff-file-compact tr.bg-red-50,
+.diff-file-compact tr[class*="bg-red-50"] {
+    background: var(--palette-diff-del-bg) !important;
+}
+
+.diff-file-compact tr.bg-red-50:hover,
+.diff-file-compact tr[class*="bg-red-50"]:hover {
+    background: var(--palette-diff-del-bg-hover) !important;
+}
+
+.diff-file-compact tr.bg-red-50 td.bg-red-100\/50,
+.diff-file-compact tr.bg-red-50 td[class*="bg-red-100"] {
+    background: var(--palette-diff-del-bg-intense) !important;
+}
+
+.diff-file-compact tr.bg-red-50 td.text-red-700 {
+    color: var(--palette-diff-del-text) !important;
+}
+
+.diff-file-compact tr.bg-red-50 .text-red-900 {
+    color: var(--palette-text) !important;
+}
+
+/* Context lines (unchanged) */
+.diff-file-compact tr:not(.bg-green-50):not(.bg-red-50):hover {
+    background: var(--bg-secondary) !important;
+}
+
+.diff-file-compact .text-gray-800 {
+    color: var(--text-primary) !important;
+}
+
+/* Result/Before view styling */
+.diff-file-compact > div[x-show*="new"],
+.diff-file-compact > div[x-show*="old"] {
+    background: var(--bg-card) !important;
+}
+
+.diff-file-compact > div[x-show*="new"] tr:hover,
+.diff-file-compact > div[x-show*="old"] tr:hover {
+    background: var(--bg-secondary) !important;
+}
+
+/* Stats badges */
+.diff-file-header .text-green-700.bg-green-50 {
+    background: var(--palette-diff-add-bg-intense) !important;
+    color: var(--palette-diff-add-text) !important;
+}
+
+.diff-file-header .text-red-700.bg-red-50 {
+    background: var(--palette-diff-del-bg-intense) !important;
+    color: var(--palette-diff-del-text) !important;
+}
+
+/* Status badges */
+.diff-file-header span.bg-green-100 {
+    background: var(--palette-diff-add-bg-hover) !important;
+    color: var(--palette-diff-add-text) !important;
+    border-color: var(--palette-diff-add-bg-intense) !important;
+}
+
+.diff-file-header span.bg-red-100 {
+    background: var(--palette-diff-del-bg-hover) !important;
+    color: var(--palette-diff-del-text) !important;
+    border-color: var(--palette-diff-del-bg-intense) !important;
+}
+
+.diff-file-header span.bg-yellow-100 {
+    background: var(--palette-warning-bg, rgba(245, 158, 11, 0.2)) !important;
+    color: var(--palette-warning) !important;
+    border-color: var(--palette-warning-bg-intense, rgba(245, 158, 11, 0.3)) !important;
+}
+
+.diff-file-header span.bg-purple-100 {
+    background: var(--palette-accent-bg, rgba(139, 92, 246, 0.2)) !important;
+    color: var(--palette-accent-secondary) !important;
+    border-color: var(--palette-accent-bg-intense, rgba(139, 92, 246, 0.3)) !important;
+}
+
+/* Binary file notice */
+.diff-file-compact .bg-gray-50.text-gray-500 {
+    background: var(--bg-secondary) !important;
+    color: var(--text-muted) !important;
+}
+
+/* Syntax highlighting in diff - theme aware */
+/* Make code backgrounds transparent so they inherit row background */
+.diff-file-compact code,
+.diff-file-compact code.hljs,
+.diff-file-compact .hljs,
+.diff-file-compact td code,
+.diff-file-compact .diff-line-content code {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit;
+}
+
+/* Code snippets - also transparent backgrounds */
+.code-snippet code,
+.code-snippet code.hljs,
+.code-snippet .hljs,
+.code-snippet td code {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* =====================================================
+   SYNTAX HIGHLIGHTING (uses palette variables)
+   ===================================================== */
+
+/* Diff views syntax highlighting */
+.diff-file-compact .hljs-keyword {
+    color: var(--palette-syntax-keyword) !important;
+}
+
+.diff-file-compact .hljs-string {
+    color: var(--palette-syntax-string) !important;
+}
+
+.diff-file-compact .hljs-number {
+    color: var(--palette-syntax-number) !important;
+}
+
+.diff-file-compact .hljs-built_in,
+.diff-file-compact .hljs-type {
+    color: var(--palette-syntax-type) !important;
+}
+
+.diff-file-compact .hljs-comment {
+    color: var(--palette-syntax-comment) !important;
+}
+
+.diff-file-compact .hljs-variable,
+.diff-file-compact .hljs-attr {
+    color: var(--palette-syntax-variable) !important;
+}
+
+.diff-file-compact .hljs-function,
+.diff-file-compact .hljs-title {
+    color: var(--palette-syntax-function) !important;
+}
+
+.diff-file-compact .hljs-tag,
+.diff-file-compact .hljs-name {
+    color: var(--palette-syntax-tag) !important;
+}
+
+.diff-file-compact .hljs-property {
+    color: var(--palette-syntax-type) !important;
+}
+
+.diff-file-compact .hljs-params {
+    color: var(--palette-text-secondary) !important;
+}
+
+.diff-file-compact .hljs-meta {
+    color: var(--palette-syntax-function) !important;
+}
+
+.diff-file-compact .hljs-class {
+    color: var(--palette-syntax-variable) !important;
+}
+
+.diff-file-compact .hljs-selector-class {
+    color: var(--palette-syntax-tag) !important;
+}
+
+.diff-file-compact .hljs-selector-id {
+    color: var(--palette-syntax-type) !important;
+}
+
+/* Code snippets syntax highlighting (same as diff) */
+.code-snippet .hljs-keyword {
+    color: var(--palette-syntax-keyword) !important;
+}
+
+.code-snippet .hljs-string {
+    color: var(--palette-syntax-string) !important;
+}
+
+.code-snippet .hljs-number {
+    color: var(--palette-syntax-number) !important;
+}
+
+.code-snippet .hljs-built_in,
+.code-snippet .hljs-type {
+    color: var(--palette-syntax-type) !important;
+}
+
+.code-snippet .hljs-comment {
+    color: var(--palette-syntax-comment) !important;
+}
+
+.code-snippet .hljs-variable,
+.code-snippet .hljs-attr {
+    color: var(--palette-syntax-variable) !important;
+}
+
+.code-snippet .hljs-function,
+.code-snippet .hljs-title {
+    color: var(--palette-syntax-function) !important;
+}
+
+.code-snippet .hljs-tag,
+.code-snippet .hljs-name {
+    color: var(--palette-syntax-tag) !important;
+}
+
+.code-snippet .hljs-property {
+    color: var(--palette-syntax-type) !important;
+}
+
+.code-snippet .hljs-params {
+    color: var(--palette-text-secondary) !important;
+}
+
+.code-snippet .hljs-meta {
+    color: var(--palette-syntax-function) !important;
+}
+
+/* Prose code blocks also use palette syntax colors */
+.prose pre .hljs-keyword {
+    color: var(--palette-syntax-keyword) !important;
+}
+
+.prose pre .hljs-string {
+    color: var(--palette-syntax-string) !important;
+}
+
+.prose pre .hljs-number {
+    color: var(--palette-syntax-number) !important;
+}
+
+.prose pre .hljs-built_in,
+.prose pre .hljs-type {
+    color: var(--palette-syntax-type) !important;
+}
+
+.prose pre .hljs-comment {
+    color: var(--palette-syntax-comment) !important;
+}
+
+.prose pre .hljs-variable {
+    color: var(--palette-syntax-variable) !important;
+}
+
+/* CLI/Code blocks - use palette code surface */
+.prose pre {
+    background-color: var(--palette-code-surface) !important;
+    color: var(--palette-code-text) !important;
+    border: 1px solid var(--palette-border);
+    border-left: 4px solid var(--palette-accent);
+    font-family: var(--font-family-mono);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.prose pre code {
+    color: var(--palette-code-text) !important;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* =====================================================
+   BEAMER MODE OVERRIDES - Must come last to override themes
+   ===================================================== */
+
+/* Beamer mode forces larger fonts regardless of theme */
+[data-mode="beamer"] {
+    --font-title: clamp(2.5rem, 6vw, 5rem) !important;
+    --font-heading: clamp(1.75rem, 4vw, 3rem) !important;
+    --font-prose: clamp(1.25rem, 3vw, 2rem) !important;
+    --font-code: clamp(1rem, 2vw, 1.5rem) !important;
+    --font-code-snippet: clamp(1.1rem, 2vw, 1.4rem) !important;
+    --line-height-prose: 1.7 !important;
+    --line-height-code: 1.9 !important;
+}
+
+/* Beamer mode - larger diff code */
+[data-mode="beamer"] .diff-file-compact table {
+    font-size: clamp(1rem, 2vw, 1.4rem) !important;
+    line-height: 2 !important;
+}
+
+/* Beamer mode - larger prose code blocks */
+[data-mode="beamer"] .prose pre {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+/* Beamer mode - larger code snippets */
+[data-mode="beamer"] .code-snippet {
+    font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+}

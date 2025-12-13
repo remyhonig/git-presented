@@ -1,0 +1,87 @@
+/* Theme: Catppuccin Frappe - Muted pastel dark theme
+
+   This theme only needs to define ~20 palette colors.
+   All component styles are automatically derived in main.css.
+*/
+
+[data-theme="catppuccin-frappe"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces - Catppuccin Frappe base colors */
+    --palette-surface: #303446;          /* Base */
+    --palette-surface-elevated: #292c3c; /* Mantle */
+    --palette-surface-sunken: #414559;   /* Surface0 */
+
+    /* Text hierarchy */
+    --palette-text: #c6d0f5;             /* Text */
+    --palette-text-secondary: #b5bfe2;   /* Subtext1 */
+    --palette-text-muted: #838ba7;       /* Overlay1 */
+
+    /* Accents - Catppuccin colors */
+    --palette-accent: #8caaee;           /* Blue */
+    --palette-accent-secondary: #babbf1; /* Lavender */
+    --palette-success: #a6d189;          /* Green */
+    --palette-warning: #e5c890;          /* Yellow */
+    --palette-danger: #e78284;           /* Red */
+
+    /* Borders */
+    --palette-border: #414559;           /* Surface0 */
+    --palette-border-strong: #51576d;    /* Surface1 */
+
+    /* Code surface */
+    --palette-code-surface: #232634;     /* Crust */
+    --palette-code-text: #c6d0f5;        /* Text */
+
+    /* Diff colors - Catppuccin themed */
+    --palette-diff-add-bg: rgba(166, 209, 137, 0.15);
+    --palette-diff-add-bg-hover: rgba(166, 209, 137, 0.25);
+    --palette-diff-add-bg-intense: rgba(166, 209, 137, 0.20);
+    --palette-diff-add-text: #a6d189;
+
+    --palette-diff-del-bg: rgba(231, 130, 132, 0.15);
+    --palette-diff-del-bg-hover: rgba(231, 130, 132, 0.25);
+    --palette-diff-del-bg-intense: rgba(231, 130, 132, 0.20);
+    --palette-diff-del-text: #e78284;
+
+    /* Syntax highlighting - Catppuccin Frappe */
+    --palette-syntax-keyword: #ca9ee6;   /* Mauve */
+    --palette-syntax-string: #a6d189;    /* Green */
+    --palette-syntax-number: #ef9f76;    /* Peach */
+    --palette-syntax-type: #e5c890;      /* Yellow */
+    --palette-syntax-comment: #949cbb;   /* Overlay2 */
+    --palette-syntax-variable: #ea999c;  /* Maroon */
+    --palette-syntax-function: #8caaee;  /* Blue */
+    --palette-syntax-tag: #81c8be;       /* Teal */
+
+    /* === DERIVED OVERRIDES === */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+    --gradient-title: linear-gradient(135deg, #c6d0f5 0%, #babbf1 100%);
+    --gradient-bg: linear-gradient(180deg, #303446 0%, #292c3c 100%);
+    --gradient-accent: linear-gradient(135deg, #8caaee 0%, #babbf1 100%);
+
+    /* Comment bubble - Catppuccin style */
+    --comment-bubble-text: #232634;
+    --comment-bubble-bg: linear-gradient(135deg, #e5c890 0%, #f4b8e4 100%);
+    --comment-bubble-border: #e5c890;
+    --comment-bubble-accent: #ef9f76;
+    --comment-bubble-shadow: 0 1px 3px rgba(229, 200, 144, 0.2);
+    --comment-doctag-text: #232634;
+    --comment-doctag-bg: rgba(229, 200, 144, 0.3);
+
+    --hljs-mode: dark;
+
+    /* Typography */
+    --font-family-sans: 'Outfit', system-ui, sans-serif;
+    --font-family-mono: 'Fira Code', monospace;
+    --font-title: clamp(1.5rem, 4vw, 3rem);
+    --font-heading: clamp(1.25rem, 3vw, 2rem);
+    --font-prose: clamp(0.9rem, 2vw, 1.25rem);
+    --font-code: clamp(0.7rem, 1vw, 0.9rem);
+    --font-code-snippet: 0.8rem;
+    --line-height-prose: 1.8;
+    --line-height-code: 1.5;
+}

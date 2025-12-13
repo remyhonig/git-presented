@@ -1,0 +1,87 @@
+/* Theme: Dark - Easy on the eyes, reading-optimized
+
+   This theme only needs to define ~20 palette colors.
+   All component styles are automatically derived in main.css.
+*/
+
+[data-theme="dark"] {
+    /* === CORE PALETTE === */
+
+    /* Surfaces */
+    --palette-surface: #0f172a;
+    --palette-surface-elevated: #1e293b;
+    --palette-surface-sunken: #334155;
+
+    /* Text hierarchy */
+    --palette-text: #f1f5f9;
+    --palette-text-secondary: #cbd5e1;
+    --palette-text-muted: #64748b;
+
+    /* Accents */
+    --palette-accent: #60a5fa;
+    --palette-accent-secondary: #818cf8;
+    --palette-success: #4ade80;
+    --palette-warning: #fbbf24;
+    --palette-danger: #f87171;
+
+    /* Borders */
+    --palette-border: #334155;
+    --palette-border-strong: #475569;
+
+    /* Code surface */
+    --palette-code-surface: #0f172a;
+    --palette-code-text: #f1f5f9;
+
+    /* Diff colors - brighter for dark backgrounds */
+    --palette-diff-add-bg: rgba(34, 197, 94, 0.15);
+    --palette-diff-add-bg-hover: rgba(34, 197, 94, 0.25);
+    --palette-diff-add-bg-intense: rgba(34, 197, 94, 0.20);
+    --palette-diff-add-text: #86efac;
+
+    --palette-diff-del-bg: rgba(239, 68, 68, 0.15);
+    --palette-diff-del-bg-hover: rgba(239, 68, 68, 0.25);
+    --palette-diff-del-bg-intense: rgba(239, 68, 68, 0.20);
+    --palette-diff-del-text: #fca5a5;
+
+    /* Syntax highlighting - GitHub dark style */
+    --palette-syntax-keyword: #ff7b72;
+    --palette-syntax-string: #a5d6ff;
+    --palette-syntax-number: #79c0ff;
+    --palette-syntax-type: #d2a8ff;
+    --palette-syntax-comment: #8b949e;
+    --palette-syntax-variable: #ffa657;
+    --palette-syntax-function: #d2a8ff;
+    --palette-syntax-tag: #7ee787;
+
+    /* === DERIVED OVERRIDES === */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+    --gradient-title: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+    --gradient-bg: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+
+    /* Comment bubble - Blue/purple style for dark mode */
+    --comment-bubble-text: #e0f2fe;
+    --comment-bubble-bg: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+    --comment-bubble-border: #3b82f6;
+    --comment-bubble-accent: #60a5fa;
+    --comment-bubble-shadow: 0 1px 3px rgba(96, 165, 250, 0.2);
+    --comment-doctag-text: #93c5fd;
+    --comment-doctag-bg: rgba(96, 165, 250, 0.25);
+
+    --hljs-mode: dark;
+
+    /* Typography */
+    --font-family-sans: 'Outfit', system-ui, sans-serif;
+    --font-family-mono: 'Fira Code', monospace;
+    --font-title: clamp(1.5rem, 4vw, 3rem);
+    --font-heading: clamp(1.25rem, 3vw, 2rem);
+    --font-prose: clamp(0.9rem, 2vw, 1.25rem);
+    --font-code: clamp(0.7rem, 1vw, 0.9rem);
+    --font-code-snippet: 0.8rem;
+    --line-height-prose: 1.8;
+    --line-height-code: 1.5;
+}

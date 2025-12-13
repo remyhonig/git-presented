@@ -1,0 +1,39 @@
+# Build output
+/build_local/
+/build_staging/
+/build_production/
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment (contains secrets)
+.env
+
+# Cache
+/cache/
+
+# IDE
+/.idea/
+/.vscode/
+/.claude/
+*.swp
+*.swo
+
+# Test/development directories
+/test-repo/
+/tmp-jigsaw/
+
+# Jigsaw generated collection directories
+/source/_presentations/
+/source/_presentationSlides/
+/source/_branches/
+/source/_steps/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+npm-debug.log
+hot
