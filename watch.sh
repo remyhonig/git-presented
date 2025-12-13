@@ -82,6 +82,7 @@ DEBOUNCE_SECONDS=2
 
 # Build function with debounce
 do_build() {
+    local CHANGED_PATH="$1"
     local NOW=$(date +%s)
     local DIFF=$((NOW - LAST_BUILD))
 
@@ -91,7 +92,8 @@ do_build() {
     fi
 
     LAST_BUILD=$NOW
-    echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} Change detected, rebuilding..."
+    echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} Changed: ${YELLOW}$CHANGED_PATH${NC}"
+    echo -e "${BLUE}[$(date +%H:%M:%S)]${NC} Rebuilding..."
     if ./vendor/bin/jigsaw build 2>&1 | grep -v "^WARN"; then
         echo -e "${GREEN}[$(date +%H:%M:%S)]${NC} Build complete ✓"
     else
@@ -106,7 +108,14 @@ do_build() {
 # 4. Git repo's refs - for new commits, branch changes (more specific than .git/)
 
 WATCH_PATHS=(
-    "$(pwd)/source"
+    "$(pwd)/source/_layouts"
+    "$(pwd)/source/_partials"
+    "$(pwd)/source/_assets"
+    "$(pwd)/source/css"
+    "$(pwd)/source/js"
+    "$(pwd)/source/assets"
+    "$(pwd)/source/index.blade.php"
+    "$(pwd)/source/branches.blade.php"
     "$(pwd)/config.php"
     "$(pwd)/helpers.php"
     "$(pwd)/bootstrap.php"
@@ -128,16 +137,14 @@ for path in "${GIT_WATCH_PATHS[@]}"; do
 done
 
 # Use fswatch with:
-# -o: output number of events (batch mode)
 # -l 1: latency of 1 second (coalesce rapid changes)
 # --exclude: ignore build output and cache directories
-fswatch -o -l 1 \
-    --exclude "build_local" \
-    --exclude "build_production" \
+# Note: removed -o to get file paths instead of event counts
+fswatch -l 1 \
     --exclude "cache" \
     --exclude "\.git/index" \
     --exclude "\.git/logs" \
     --exclude "\.git/objects" \
-    "${WATCH_PATHS[@]}" | while read num; do
-    do_build
+    "${WATCH_PATHS[@]}" | while read changed_path; do
+    do_build "$changed_path"
 done
