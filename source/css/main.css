@@ -362,8 +362,8 @@ pre code {
 /* Slide navigation arrows */
 .slide-nav-arrow {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 2rem;
+    transform: none;
     background: var(--bg-card);
     border: 2px solid var(--border-primary);
     border-radius: 50%;
@@ -390,7 +390,7 @@ pre code {
     background: var(--bg-secondary);
     border-color: var(--accent-primary);
     color: var(--accent-primary);
-    transform: translateX(-50%) scale(1.1);
+    transform: scale(1.1);
 }
 .slide-nav-up {
     top: 1rem;
@@ -573,10 +573,12 @@ pre code {
 }
 
 /* Overview page prose - smaller headings for preview */
+/* Center the block but keep text left-aligned within */
 .overview-prose {
     max-width: 42rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    text-align: left;
 }
 .overview-prose a {
     word-break: break-all;
