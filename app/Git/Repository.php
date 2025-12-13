@@ -6,6 +6,7 @@ namespace App\Git;
 
 use App\Git\Model\Branch;
 use App\Git\Model\CodeSnippetReference;
+use App\Git\Model\DiffFile;
 use App\Git\Model\DiffLine;
 use App\Git\Model\Presentation;
 use App\Git\Parser\BranchParser;

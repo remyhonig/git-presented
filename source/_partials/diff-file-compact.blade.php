@@ -130,7 +130,7 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
         @foreach($file->getHunks() as $hunk)
         <div class="diff-hunk">
             {{-- Diff Lines (GitHub-style table, optimized for projection) --}}
-            <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: 1rem; line-height: 1.8;">
+            <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);">
                 <tbody>
                     @foreach($hunk->getLines() as $line)
                     <tr class="
@@ -143,7 +143,7 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
                             @if($line->isAdd()) bg-green-100/50
                             @elseif($line->isRemove()) bg-red-100/50
                             @else bg-gray-50
-                            @endif" style="min-width: 3rem; font-size: 1rem; line-height: 1.8;">
+                            @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
                             <span class="px-1">{{ $line->oldLineNumber ?? '' }}</span>
                         </td>
                         {{-- New line number --}}
@@ -151,7 +151,7 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
                             @if($line->isAdd()) bg-green-100/50
                             @elseif($line->isRemove()) bg-red-100/50
                             @else bg-gray-50
-                            @endif" style="min-width: 3rem; font-size: 1rem; line-height: 1.8;">
+                            @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
                             <span class="px-1">{{ $line->newLineNumber ?? '' }}</span>
                         </td>
                         {{-- Prefix (+/-/space) --}}
@@ -160,16 +160,18 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
                             @elseif($line->isRemove()) text-red-700 bg-red-100
                             @elseif($line->isNoNewline()) text-gray-400 bg-gray-100 italic
                             @else text-gray-400
-                            @endif" style="width: 1.5rem; font-size: 1rem; line-height: 1.8;">
+                            @endif" style="width: 1.5rem; font-size: inherit; line-height: inherit;">
                             {{ $line->getPrefix() }}
                         </td>
                         {{-- Content with syntax highlighting --}}
-                        <td class="diff-line-content pl-2 whitespace-pre overflow-x-auto align-baseline
-                            @if($line->isAdd()) text-green-900
-                            @elseif($line->isRemove()) text-red-900
-                            @elseif($line->isNoNewline()) text-gray-500 italic
-                            @else text-gray-800
-                            @endif" style="line-height: 1.8;"><code class="language-{{ $language }}" data-highlighted="no">{{ $line->content }}</code></td>
+                        @php
+                        $contentClass = 'diff-line-content pl-2 whitespace-pre overflow-x-auto align-baseline';
+                        if ($line->isAdd()) $contentClass .= ' text-green-900';
+                        elseif ($line->isRemove()) $contentClass .= ' text-red-900';
+                        elseif ($line->isNoNewline()) $contentClass .= ' text-gray-500 italic';
+                        else $contentClass .= ' text-gray-800';
+                        @endphp
+                        <td class="{{ $contentClass }}" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no">{{ $line->content }}</code></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -181,14 +183,14 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
     {{-- Result (New) View (optimized for projection) --}}
     @if(!$isDeletedFile && $newContent !== null)
     <div x-show="viewMode === 'new'" style="display: none;" class="bg-white">
-        <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: 1rem; line-height: 1.8;">
+        <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);">
             <tbody>
                 @foreach(explode("\n", $newContent) as $lineNum => $lineContent)
                 <tr class="hover:bg-gray-50">
-                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 bg-gray-50 align-baseline" style="min-width: 3rem; font-size: 1rem; line-height: 1.8;">
+                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 bg-gray-50 align-baseline" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
                         <span class="px-1">{{ $lineNum + 1 }}</span>
                     </td>
-                    <td class="pl-3 whitespace-pre overflow-x-auto text-gray-800 align-baseline" style="line-height: 1.8;"><code class="language-{{ $language }}" data-highlighted="no">{{ $lineContent }}</code></td>
+                    <td class="pl-3 whitespace-pre overflow-x-auto text-gray-800 align-baseline" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no">{{ $lineContent }}</code></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -199,14 +201,14 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
     {{-- Before (Old) View (optimized for projection) --}}
     @if(!$isNewFile && $oldContent !== null)
     <div x-show="viewMode === 'old'" style="display: none;" class="bg-white">
-        <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: 1rem; line-height: 1.8;">
+        <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);">
             <tbody>
                 @foreach(explode("\n", $oldContent) as $lineNum => $lineContent)
                 <tr class="hover:bg-gray-50">
-                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 bg-gray-50 align-baseline" style="min-width: 3rem; font-size: 1rem; line-height: 1.8;">
+                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 bg-gray-50 align-baseline" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
                         <span class="px-1">{{ $lineNum + 1 }}</span>
                     </td>
-                    <td class="pl-3 whitespace-pre overflow-x-auto text-gray-800 align-baseline" style="line-height: 1.8;"><code class="language-{{ $language }}" data-highlighted="no">{{ $lineContent }}</code></td>
+                    <td class="pl-3 whitespace-pre overflow-x-auto text-gray-800 align-baseline" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no">{{ $lineContent }}</code></td>
                 </tr>
                 @endforeach
             </tbody>

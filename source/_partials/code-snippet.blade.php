@@ -129,9 +129,7 @@ $language = $languageMap[strtolower($extension)] ?? 'plaintext';
                         {{ $line->newLineNumber ?? '' }}
                     </td>
                     <td class="text-center select-none align-baseline" style="width: 1.5rem; font-size: inherit; line-height: inherit; {{ $prefixStyle }}">{{ $prefix }}</td>
-                    <td class="diff-line-content pl-2 whitespace-pre align-baseline" style="line-height: inherit;">
-                        <code class="language-{{ $language }}" data-highlighted="no" style="color: var(--text-primary);">{{ $line->content }}</code>
-                    </td>
+                    <td class="diff-line-content pl-2 whitespace-pre align-baseline" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no" style="color: var(--text-primary);">{{ $line->content }}</code></td>
                 </tr>
                 @endforeach
 

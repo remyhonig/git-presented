@@ -86,5 +86,5 @@
     --font-code: clamp(0.8rem, 1.2vw, 1.1rem);
     --font-code-snippet: 1rem;
     --line-height-prose: 1.6;
-    --line-height-code: 1.8;
+    --line-height-code: 1.5;
 }
