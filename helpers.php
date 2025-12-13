@@ -134,6 +134,32 @@ if (!function_exists('parseMarkdownWithSnippets')) {
             return parseMarkdown($text);
         }
 
+        // Helper function to check if an offset is inside backtick-delimited code
+        $isInsideBackticks = function (string $text, int $offset): bool {
+            // Check for code blocks (```) - find all code block regions
+            preg_match_all('/```[\s\S]*?```/m', $text, $codeBlocks, PREG_OFFSET_CAPTURE);
+            foreach ($codeBlocks[0] as $block) {
+                $blockStart = $block[1];
+                $blockEnd = $blockStart + strlen($block[0]);
+                if ($offset >= $blockStart && $offset < $blockEnd) {
+                    return true;
+                }
+            }
+
+            // Check for inline code (`) - but not inside code blocks
+            // Find all inline code regions (single backticks, not triple)
+            preg_match_all('/(?<!`)`(?!`)([^`\n]+)`(?!`)/m', $text, $inlineCode, PREG_OFFSET_CAPTURE);
+            foreach ($inlineCode[0] as $code) {
+                $codeStart = $code[1];
+                $codeEnd = $codeStart + strlen($code[0]);
+                if ($offset >= $codeStart && $offset < $codeEnd) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         // Pattern to match [file:lines] or [file:lines:diff] anywhere in text
         // Must be on its own line (possibly with whitespace)
         // File path can optionally start with / for working directory files
@@ -154,6 +180,11 @@ if (!function_exists('parseMarkdownWithSnippets')) {
         foreach ($matches as $match) {
             $fullMatch = $match[0][0];
             $offset = $match[0][1];
+
+            // Skip if inside backticks (code block or inline code)
+            if ($isInsideBackticks($text, $offset)) {
+                continue;
+            }
 
             $isWorkingDir = $match[1][0] === '/';
             $filePath = $match[2][0];

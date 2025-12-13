@@ -51,10 +51,16 @@ final class SubSlideParser
         $currentContent = [];
         $slideIndex = 0;
         $foundFirstHeading = false;
+        $insideCodeBlock = false;
 
         foreach ($lines as $line) {
-            // Check if this line is an h1 or h2 heading
-            if (preg_match('/^#{1,2}\s+(.+)$/', $line, $match)) {
+            // Track code block state (lines starting with ```)
+            if (preg_match('/^```/', $line)) {
+                $insideCodeBlock = !$insideCodeBlock;
+            }
+
+            // Check if this line is an h1 or h2 heading (only if not inside code block)
+            if (!$insideCodeBlock && preg_match('/^#{1,2}\s+(.+)$/', $line, $match)) {
                 // If we have a previous section, save it
                 if ($foundFirstHeading && $currentTitle !== null) {
                     $subSlides->push(new SubSlide(
