@@ -432,6 +432,7 @@ pre code {
     border-collapse: collapse;
     min-width: 100%;
     table-layout: auto;
+    margin: 0 !important;
 }
 .code-snippet code {
     font-size: var(--font-code-snippet);
@@ -448,6 +449,7 @@ pre code {
 .code-snippet tr {
     height: auto;
     line-height: var(--line-height-code);
+    border: none !important;
 }
 .code-snippet td {
     padding: 1px 2px;

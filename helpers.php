@@ -114,3 +114,244 @@ if (!function_exists('getMarkdownConverter')) {
         return $converter;
     }
 }
+
+if (!function_exists('parseMarkdownWithSnippets')) {
+    /**
+     * Parse Markdown text to HTML, replacing inline [file:lines] references with rendered code snippets.
+     *
+     * Supports two types of file references:
+     * - [file.php:10-20] - File from the current commit
+     * - [/path/to/file.php:10-20] - File from the working directory (starts with /)
+     *
+     * @param string $text The markdown text
+     * @param \App\Git\Repository|null $gitRepo The git repository for fetching file content
+     * @param string|null $commitHash The commit hash to fetch content from
+     * @return string The rendered HTML with inline code snippets
+     */
+    function parseMarkdownWithSnippets(string $text, $gitRepo = null, ?string $commitHash = null): string
+    {
+        if ($gitRepo === null) {
+            return parseMarkdown($text);
+        }
+
+        // Pattern to match [file:lines] or [file:lines:diff] anywhere in text
+        // Must be on its own line (possibly with whitespace)
+        // File path can optionally start with / for working directory files
+        $pattern = '/^\s*\[(\/?)([^\]:\s]+):(\d+)(?:-(\d+))?(?::(diff|result))?\]\s*$/m';
+
+        // Find all matches and store snippet data with placeholders
+        if (!preg_match_all($pattern, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+            return parseMarkdown($text);
+        }
+
+        // Generate unique placeholders and collect snippets to render
+        $snippets = [];
+        $counter = 0;
+
+        // Process matches in reverse order to preserve offsets when replacing
+        $matches = array_reverse($matches);
+
+        foreach ($matches as $match) {
+            $fullMatch = $match[0][0];
+            $offset = $match[0][1];
+
+            $isWorkingDir = $match[1][0] === '/';
+            $filePath = $match[2][0];
+            $startLine = (int) $match[3][0];
+            $endLine = isset($match[4][0]) && $match[4][0] !== '' ? (int) $match[4][0] : $startLine;
+            $viewType = isset($match[5][0]) && $match[5][0] !== '' ? $match[5][0] : 'result';
+
+            // Ensure start <= end
+            if ($startLine > $endLine) {
+                [$startLine, $endLine] = [$endLine, $startLine];
+            }
+
+            // Create unique placeholder that won't be stripped by markdown
+            // Use a format that becomes a paragraph with identifiable content
+            $placeholder = "SNIPPETPLACEHOLDER{$counter}ENDSNIPPET";
+            $counter++;
+
+            // Create snippet reference
+            $snippet = new \App\Git\Model\CodeSnippetReference(
+                filePath: $filePath,
+                startLine: $startLine,
+                endLine: $endLine,
+                viewType: $viewType,
+            );
+
+            // Fetch content - from working directory or commit
+            if ($isWorkingDir) {
+                $result = $gitRepo->getWorkingSnippetContent($snippet);
+            } elseif ($commitHash !== null) {
+                $result = $gitRepo->getSnippetContent($commitHash, $snippet);
+            } else {
+                // No commit hash, try working directory as fallback
+                $result = $gitRepo->getWorkingSnippetContent($snippet);
+            }
+
+            // Store for later replacement
+            $snippets[$placeholder] = renderInlineSnippet($snippet, $result);
+
+            // Replace snippet reference with placeholder
+            $text = substr_replace($text, $placeholder, $offset, strlen($fullMatch));
+        }
+
+        // Parse the markdown (placeholders are HTML comments, will pass through)
+        $html = parseMarkdown($text);
+
+        // Replace placeholders with actual snippet HTML
+        foreach ($snippets as $placeholder => $snippetHtml) {
+            // Handle various ways markdown might wrap the placeholder:
+            // 1. Wrapped in its own <p> tag
+            $html = preg_replace(
+                '/<p>' . preg_quote($placeholder, '/') . '<\/p>/',
+                $snippetHtml,
+                $html
+            );
+            // 2. At the start of a <p> tag with content after
+            $html = preg_replace(
+                '/<p>' . preg_quote($placeholder, '/') . '\n/',
+                $snippetHtml . "\n<p>",
+                $html
+            );
+            // 3. Plain replacement (shouldn't happen, but just in case)
+            $html = str_replace($placeholder, $snippetHtml, $html);
+        }
+
+        return $html;
+    }
+}
+
+if (!function_exists('renderInlineSnippet')) {
+    /**
+     * Render a code snippet as inline HTML.
+     *
+     * @param \App\Git\Model\CodeSnippetReference $snippet
+     * @param array $result The result from getSnippetContent
+     * @return string HTML for the code snippet
+     */
+    function renderInlineSnippet(\App\Git\Model\CodeSnippetReference $snippet, array $result): string
+    {
+        $extension = $snippet->getExtension();
+        $content = $result['content'] ?? null;
+        $lines = $result['lines'] ?? null;
+        $error = $result['error'] ?? null;
+        $viewType = $result['viewType'] ?? 'result';
+
+        // Map file extensions to highlight.js language names
+        $languageMap = [
+            'php' => 'php',
+            'js' => 'javascript',
+            'ts' => 'typescript',
+            'jsx' => 'javascript',
+            'tsx' => 'typescript',
+            'vue' => 'xml',
+            'html' => 'xml',
+            'htm' => 'xml',
+            'xml' => 'xml',
+            'css' => 'css',
+            'scss' => 'scss',
+            'sass' => 'sass',
+            'less' => 'less',
+            'json' => 'json',
+            'yaml' => 'yaml',
+            'yml' => 'yaml',
+            'md' => 'markdown',
+            'py' => 'python',
+            'rb' => 'ruby',
+            'java' => 'java',
+            'kt' => 'kotlin',
+            'go' => 'go',
+            'rs' => 'rust',
+            'c' => 'c',
+            'cpp' => 'cpp',
+            'h' => 'c',
+            'hpp' => 'cpp',
+            'cs' => 'csharp',
+            'swift' => 'swift',
+            'sh' => 'bash',
+            'bash' => 'bash',
+            'zsh' => 'bash',
+            'sql' => 'sql',
+            'graphql' => 'graphql',
+            'dockerfile' => 'dockerfile',
+            'makefile' => 'makefile',
+            'env' => 'ini',
+            'ini' => 'ini',
+            'toml' => 'ini',
+            'twig' => 'twig',
+            'blade.php' => 'php',
+        ];
+        $language = $languageMap[strtolower($extension)] ?? 'plaintext';
+
+        $html = '<div class="code-snippet inline-snippet rounded-lg overflow-hidden flex flex-col my-4 mx-auto" style="width: fit-content; max-width: 100%; background: var(--bg-card); border: 1px solid var(--border-primary); box-shadow: var(--shadow-lg);">';
+
+        // Title Bar
+        $html .= '<div class="px-4 py-2 flex items-center justify-center" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-primary);">';
+        $html .= '<span class="text-sm font-medium truncate" style="color: var(--text-primary);" title="' . htmlspecialchars($snippet->filePath) . '">';
+        $html .= htmlspecialchars(basename($snippet->filePath));
+        $html .= '</span></div>';
+
+        // Content
+        $html .= '<div class="flex-1 overflow-auto" style="padding: 0.5rem 0.75rem 0.5rem 0;">';
+
+        if ($error) {
+            // Error state
+            $html .= '<div class="p-4 bg-red-50 text-red-700">';
+            $html .= '<p class="text-sm font-medium">' . htmlspecialchars($error) . '</p>';
+            $html .= '<p class="text-xs text-red-500 mt-1">' . htmlspecialchars($snippet->filePath) . ':' . $snippet->startLine . '-' . $snippet->endLine . '</p>';
+            $html .= '</div>';
+        } elseif ($viewType === 'diff' && $lines !== null) {
+            // Diff view
+            $html .= '<table class="font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);"><tbody>';
+            foreach ($lines as $line) {
+                $bgStyle = match($line->type) {
+                    'add' => 'background: rgba(34, 197, 94, 0.1);',
+                    'remove' => 'background: rgba(239, 68, 68, 0.1);',
+                    default => '',
+                };
+                $prefix = match($line->type) {
+                    'add' => '+',
+                    'remove' => '-',
+                    default => ' ',
+                };
+                $prefixStyle = match($line->type) {
+                    'add' => 'color: var(--accent-success);',
+                    'remove' => 'color: var(--accent-danger);',
+                    default => 'color: var(--text-muted);',
+                };
+                $lineNumBg = match($line->type) {
+                    'add' => 'background: rgba(34, 197, 94, 0.15);',
+                    'remove' => 'background: rgba(239, 68, 68, 0.15);',
+                    default => '',
+                };
+
+                $html .= '<tr style="' . $bgStyle . '">';
+                $html .= '<td class="text-right pr-2 select-none align-baseline" style="min-width: 2.5rem; font-size: inherit; line-height: inherit; color: var(--text-muted); border-right: 1px solid var(--border-primary); ' . ($line->type === 'remove' ? $lineNumBg : '') . '">' . ($line->oldLineNumber ?? '') . '</td>';
+                $html .= '<td class="text-right pr-2 select-none align-baseline" style="min-width: 2.5rem; font-size: inherit; line-height: inherit; color: var(--text-muted); border-right: 1px solid var(--border-primary); ' . ($line->type === 'add' ? $lineNumBg : '') . '">' . ($line->newLineNumber ?? '') . '</td>';
+                $html .= '<td class="text-center select-none align-baseline" style="width: 1.5rem; font-size: inherit; line-height: inherit; ' . $prefixStyle . '">' . $prefix . '</td>';
+                $html .= '<td class="diff-line-content pl-2 whitespace-pre align-baseline" style="line-height: inherit;"><code class="language-' . $language . '" data-highlighted="no" style="color: var(--text-primary);">' . htmlspecialchars($line->content) . '</code></td>';
+                $html .= '</tr>';
+            }
+            if (count($lines) === 0) {
+                $html .= '<tr><td colspan="4" class="p-4 text-center" style="color: var(--text-muted);">No changes in this line range</td></tr>';
+            }
+            $html .= '</tbody></table>';
+        } else {
+            // Result view
+            $html .= '<table class="font-mono" style="border-collapse: collapse; font-size: var(--font-code-snippet);"><tbody>';
+            $contentLines = explode("\n", $content ?? '');
+            foreach ($contentLines as $index => $lineContent) {
+                $html .= '<tr>';
+                $html .= '<td class="text-right select-none" style="padding: 0 1em 0 1em; line-height: 1.4; color: var(--text-muted); vertical-align: top;">' . ($snippet->startLine + $index) . '</td>';
+                $html .= '<td class="whitespace-pre" style="line-height: 1.4; vertical-align: top;"><code class="language-' . $language . '" data-highlighted="no" style="font-size: inherit; color: var(--text-primary);">' . htmlspecialchars($lineContent) . '</code></td>';
+                $html .= '</tr>';
+            }
+            $html .= '</tbody></table>';
+        }
+
+        $html .= '</div></div>';
+
+        return $html;
+    }
+}

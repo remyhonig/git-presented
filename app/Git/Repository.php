@@ -273,4 +273,87 @@ class Repository
             'viewType' => CodeSnippetReference::VIEW_RESULT,
         ];
     }
+
+    /**
+     * Get file content from the working directory (not from a commit).
+     * This allows referencing current files that may not exist in the commit.
+     *
+     * @return array{content: ?string, error: ?string}
+     */
+    public function getWorkingFileContentRange(string $filePath, int $startLine, int $endLine): array
+    {
+        $fullPath = $this->path . '/' . ltrim($filePath, '/');
+
+        if (!file_exists($fullPath)) {
+            return [
+                'content' => null,
+                'error' => "File not found: {$filePath}",
+            ];
+        }
+
+        if (!is_readable($fullPath)) {
+            return [
+                'content' => null,
+                'error' => "File not readable: {$filePath}",
+            ];
+        }
+
+        $fullContent = file_get_contents($fullPath);
+        $lines = explode("\n", $fullContent);
+        $totalLines = count($lines);
+
+        // Validate line range
+        if ($startLine < 1 || $startLine > $totalLines) {
+            return [
+                'content' => null,
+                'error' => "Start line {$startLine} is out of range (file has {$totalLines} lines)",
+            ];
+        }
+
+        if ($endLine > $totalLines) {
+            $endLine = $totalLines;
+        }
+
+        // Extract line range (1-indexed to 0-indexed conversion)
+        $selectedLines = array_slice($lines, $startLine - 1, $endLine - $startLine + 1);
+
+        // Dedent: remove common leading whitespace
+        $selectedLines = $this->dedentLines($selectedLines);
+
+        return [
+            'content' => implode("\n", $selectedLines),
+            'error' => null,
+        ];
+    }
+
+    /**
+     * Get snippet content from the working directory.
+     * Only supports result view (not diff) since there's no commit to diff against.
+     *
+     * @return array{content: ?string, lines: ?Collection, error: ?string, viewType: string}
+     */
+    public function getWorkingSnippetContent(CodeSnippetReference $snippet): array
+    {
+        if ($snippet->isDiffView()) {
+            return [
+                'content' => null,
+                'lines' => null,
+                'error' => "Diff view not supported for working directory files",
+                'viewType' => CodeSnippetReference::VIEW_DIFF,
+            ];
+        }
+
+        $result = $this->getWorkingFileContentRange(
+            $snippet->filePath,
+            $snippet->startLine,
+            $snippet->endLine
+        );
+
+        return [
+            'content' => $result['content'],
+            'lines' => null,
+            'error' => $result['error'],
+            'viewType' => CodeSnippetReference::VIEW_RESULT,
+        ];
+    }
 }

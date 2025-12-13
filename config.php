@@ -118,6 +118,12 @@ return [
         return parseMarkdown($text);
     },
 
+    // Markdown parsing with inline code snippet support
+    'markdownWithSnippets' => function ($page, $text, $commitHash = null) {
+        $hash = $commitHash ?? ($page->stepHash ?? null);
+        return parseMarkdownWithSnippets($text, $page->gitRepo ?? null, $hash);
+    },
+
     // Collections for dynamic page generation
     'collections' => [
         'presentations' => [
