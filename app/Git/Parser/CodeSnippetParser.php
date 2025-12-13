@@ -91,12 +91,12 @@ final class CodeSnippetParser
 
     /**
      * Remove snippet tags from a description text.
-     * Returns the description with all [file:lines] tags removed from headings.
+     * Returns the description with all [file:lines] tags removed from headings (h1 and h2).
      */
     public function cleanDescription(string $description): string
     {
         return preg_replace_callback(
-            '/^(##\s+)(.+)$/m',
+            '/^(#{1,2}\s+)(.+)$/m',
             function ($match) {
                 $parsed = $this->parseHeading($match[2]);
                 return $match[1] . $parsed['title'];

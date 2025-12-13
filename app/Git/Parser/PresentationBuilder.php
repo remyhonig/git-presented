@@ -10,6 +10,7 @@ use App\Git\Model\Presentation;
 use App\Git\Model\Step;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use App\Git\Parser\CodeSnippetParser;
 
 class PresentationBuilder
 {
@@ -97,7 +98,7 @@ class PresentationBuilder
 
     /**
      * Extract the presentation title from a commit subject.
-     * Removes the #presentation tag and cleans up the title.
+     * Removes the #presentation tag, code snippet references, and cleans up the title.
      */
     private function extractTitle(Commit $commit): string
     {
@@ -108,6 +109,11 @@ class PresentationBuilder
 
         // Clean up extra spaces
         $title = trim(preg_replace('/\s+/', ' ', $title));
+
+        // Parse out any code snippet references
+        $snippetParser = new CodeSnippetParser();
+        $parsed = $snippetParser->parseHeading($title);
+        $title = $parsed['title'];
 
         return $title ?: 'Untitled Presentation';
     }

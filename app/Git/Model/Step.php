@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Git\Model;
 
 use App\Git\Parser\SubSlideParser;
+use App\Git\Parser\CodeSnippetParser;
 use DateTimeImmutable;
 use Illuminate\Support\Collection;
 
 class Step
 {
     private ?array $parsedDescription = null;
+    private ?array $parsedTitle = null;
 
     public function __construct(
         public readonly string $id,
@@ -18,16 +20,59 @@ class Step
         public readonly Commit $commit,
     ) {}
 
+    /**
+     * Parse the title and extract any code snippet reference (cached).
+     */
+    private function getParsedTitle(): array
+    {
+        if ($this->parsedTitle === null) {
+            // First remove #presentation tag
+            $rawTitle = preg_replace('/#presentation/i', '', $this->commit->subject);
+            $rawTitle = trim(preg_replace('/\s+/', ' ', $rawTitle));
+
+            // Then parse for code snippet references
+            $parser = new CodeSnippetParser();
+            $this->parsedTitle = $parser->parseHeading($rawTitle);
+        }
+        return $this->parsedTitle;
+    }
+
+    /**
+     * Get the clean title without code snippet references.
+     */
     public function getTitle(): string
     {
-        // Remove #presentation tag (case-insensitive) and clean up
-        $title = preg_replace('/#presentation/i', '', $this->commit->subject);
-        return trim(preg_replace('/\s+/', ' ', $title));
+        return $this->getParsedTitle()['title'];
+    }
+
+    /**
+     * Get the code snippet reference from the title, if any.
+     */
+    public function getTitleSnippet(): ?CodeSnippetReference
+    {
+        return $this->getParsedTitle()['snippet'];
+    }
+
+    /**
+     * Check if the title has a code snippet reference.
+     */
+    public function hasTitleSnippet(): bool
+    {
+        return $this->getTitleSnippet() !== null;
     }
 
     public function getDescription(): string
     {
         return trim($this->commit->body);
+    }
+
+    /**
+     * Get the description with code snippet references removed from headings.
+     */
+    public function getCleanDescription(): string
+    {
+        $parser = new CodeSnippetParser();
+        return $parser->cleanDescription($this->getDescription());
     }
 
     /**

@@ -44,8 +44,7 @@
 
                     {{-- Content (not skewed) --}}
                     <div class="relative py-12 md:py-16">
-                        <a href="{{ $firstStep ? $page->getPresentationStepUrl($presentation->id, $firstStep->id) : $page->getPresentationUrl($presentation->id) }}"
-                           class="group block max-w-3xl mx-auto">
+                        <div class="max-w-3xl mx-auto">
 
                             {{-- Slide number indicator --}}
                             <div class="flex items-center justify-center mb-6">
@@ -58,7 +57,7 @@
                             {{-- Title --}}
                             <div class="text-center mb-4">
                                 @if($firstStep)
-                                <h2 class="text-xl md:text-2xl font-semibold leading-tight prose-title group-hover:opacity-70 transition-opacity" style="color: var(--text-secondary);">
+                                <h2 class="text-xl md:text-2xl font-semibold leading-tight prose-title" style="color: var(--text-secondary);">
                                     {!! $page->markdown($firstStep->getTitle()) !!}
                                 </h2>
                                 @else
@@ -68,9 +67,9 @@
 
                             {{-- Description --}}
                             @if($firstStep && $firstStep->getDescription())
-                            <div class="flex justify-center mb-6">
-                                <div class="overview-prose prose text-left" style="color: var(--text-secondary);">
-                                    {!! $page->markdown($firstStep->getDescription()) !!}
+                            <div class="mb-6">
+                                <div class="overview-prose prose mx-auto" style="color: var(--text-secondary);">
+                                    {!! $page->markdown($firstStep->getCleanDescription()) !!}
                                 </div>
                             </div>
                             @endif
@@ -94,15 +93,16 @@
 
                             {{-- Start button --}}
                             <div class="text-center">
-                                <span class="inline-flex items-center px-6 py-3 rounded-full text-base font-semibold group-hover:scale-105 transition-transform"
-                                      style="background: var(--gradient-accent); color: var(--text-inverse); box-shadow: var(--shadow-md);">
+                                <a href="{{ $firstStep ? $page->getPresentationStepUrl($presentation->id, $firstStep->id) : $page->getPresentationUrl($presentation->id) }}"
+                                   class="inline-flex items-center px-6 py-3 rounded-full text-base font-semibold hover:scale-105 transition-transform"
+                                   style="background: var(--gradient-accent); color: var(--text-inverse); box-shadow: var(--shadow-md);">
                                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z"/>
                                     </svg>
                                     Start presentation
-                                </span>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 @endforeach

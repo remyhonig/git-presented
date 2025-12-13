@@ -146,7 +146,7 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
                 {{-- Intro content (text before first h2) or full description if no sub-slides --}}
                 @if(!$hasSubSlides && $step->getDescription())
                 <div class="prose max-w-none mt-8 slide-prose">
-                    {!! $page->markdown($step->getDescription()) !!}
+                    {!! $page->markdown($step->getCleanDescription()) !!}
                 </div>
                 @elseif($introContent)
                 <div class="prose max-w-none mt-8 slide-prose">
