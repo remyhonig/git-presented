@@ -18,7 +18,16 @@ final class CodeSnippetReference
         public readonly int $startLine,
         public readonly int $endLine,
         public readonly string $viewType = self::VIEW_RESULT,
+        public readonly ?string $commitHash = null,
     ) {
+    }
+
+    /**
+     * Check if this snippet references a specific commit.
+     */
+    public function hasCommitHash(): bool
+    {
+        return $this->commitHash !== null;
     }
 
     /**
@@ -27,7 +36,11 @@ final class CodeSnippetReference
      */
     public function getId(): string
     {
-        return md5($this->filePath . ':' . $this->startLine . '-' . $this->endLine . ':' . $this->viewType);
+        $base = $this->filePath . ':' . $this->startLine . '-' . $this->endLine . ':' . $this->viewType;
+        if ($this->commitHash !== null) {
+            $base .= '@' . $this->commitHash;
+        }
+        return md5($base);
     }
 
     /**

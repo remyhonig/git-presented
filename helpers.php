@@ -160,10 +160,11 @@ if (!function_exists('parseMarkdownWithSnippets')) {
             return false;
         };
 
-        // Pattern to match [file:lines] or [file:lines:diff] anywhere in text
+        // Pattern to match [file:lines] or [file:lines:diff] or [file:lines:diff@commit] anywhere in text
         // Must be on its own line (possibly with whitespace)
         // File path can optionally start with / for working directory files
-        $pattern = '/^\s*\[(\/?)([^\]:\s]+):(\d+)(?:-(\d+))?(?::(diff|result))?\]\s*$/m';
+        // Optional @commitHash suffix to reference a specific commit
+        $pattern = '/^\s*\[(\/?)([^\]:\s]+):(\d+)(?:-(\d+))?(?::(diff|result))?(?:@([a-fA-F0-9]+))?\]\s*$/m';
 
         // Find all matches and store snippet data with placeholders
         if (!preg_match_all($pattern, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
@@ -191,6 +192,7 @@ if (!function_exists('parseMarkdownWithSnippets')) {
             $startLine = (int) $match[3][0];
             $endLine = isset($match[4][0]) && $match[4][0] !== '' ? (int) $match[4][0] : $startLine;
             $viewType = isset($match[5][0]) && $match[5][0] !== '' ? $match[5][0] : 'result';
+            $specificCommit = isset($match[6][0]) && $match[6][0] !== '' ? $match[6][0] : null;
 
             // Ensure start <= end
             if ($startLine > $endLine) {
@@ -208,11 +210,16 @@ if (!function_exists('parseMarkdownWithSnippets')) {
                 startLine: $startLine,
                 endLine: $endLine,
                 viewType: $viewType,
+                commitHash: $specificCommit,
             );
 
             // Fetch content - from working directory or commit
+            // Priority: 1) Working dir (/ prefix), 2) Specific commit (@hash), 3) Current commit, 4) Working dir fallback
             if ($isWorkingDir) {
                 $result = $gitRepo->getWorkingSnippetContent($snippet);
+            } elseif ($specificCommit !== null) {
+                // Use the explicitly specified commit
+                $result = $gitRepo->getSnippetContent($specificCommit, $snippet);
             } elseif ($commitHash !== null) {
                 $result = $gitRepo->getSnippetContent($commitHash, $snippet);
             } else {

@@ -56,6 +56,9 @@
 
     /* === DERIVED OVERRIDES === */
 
+    /* Inline code - brighter orange */
+    --code-text: #ff9933;
+
     /* Shadows for dark theme */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
