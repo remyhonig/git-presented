@@ -145,11 +145,11 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
 
                 {{-- Intro content (text before first h2) or full description if no sub-slides --}}
                 @if(!$hasSubSlides && $step->getDescription())
-                <div class="prose max-w-none mt-8 slide-prose">
+                <div class="prose max-w-none mt-8 slide-prose slide-intro">
                     {!! $page->markdown($step->getCleanDescription()) !!}
                 </div>
                 @elseif($introContent)
-                <div class="prose max-w-none mt-8 slide-prose">
+                <div class="prose max-w-none mt-8 slide-prose slide-intro">
                     {!! $page->markdown($introContent) !!}
                 </div>
                 @endif
@@ -178,7 +178,7 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
                 <h2 class="slide-heading font-bold slide-mb text-center">{{ $subSlide->title }}</h2>
 
                 {{-- Prose content above --}}
-                <div class="prose max-w-none slide-content slide-prose mb-6 text-center" style="max-width: 60rem;">
+                <div class="prose max-w-none slide-content slide-prose mb-6">
                     {!! $page->markdown($subSlide->content) !!}
                 </div>
 
