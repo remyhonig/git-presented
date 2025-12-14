@@ -167,23 +167,27 @@ Syntax: `[filepath:startLine-endLine]` or `[filepath:startLine-endLine:diff]`
 
 <table>
 <tr>
-<td align="center"><strong>Light</strong><br><img src="screenshots/light.png" width="280"/></td>
-<td align="center"><strong>Dark</strong><br><img src="screenshots/dark.png" width="280"/></td>
-<td align="center"><strong>Presentation</strong><br><img src="screenshots/presentation.png" width="280"/></td>
+<td align="center"><strong>Light</strong><br><img src="screenshots/light.png" width="400"/></td>
+<td align="center"><strong>Dark</strong><br><img src="screenshots/dark.png" width="400"/></td>
 </tr>
 <tr>
-<td align="center"><strong>Laravel</strong><br><img src="screenshots/laravel.png" width="280"/></td>
-<td align="center"><strong>Symfony</strong><br><img src="screenshots/symfony.png" width="280"/></td>
-<td align="center"><strong>Microsoft</strong><br><img src="screenshots/microsoft.png" width="280"/></td>
+<td align="center"><strong>Presentation</strong><br><img src="screenshots/presentation.png" width="400"/></td>
+<td align="center"><strong>Laravel</strong><br><img src="screenshots/laravel.png" width="400"/></td>
 </tr>
 <tr>
-<td align="center"><strong>Schiphol</strong><br><img src="screenshots/schiphol.png" width="280"/></td>
-<td align="center"><strong>Catppuccin Latte</strong><br><img src="screenshots/catppuccin-latte.png" width="280"/></td>
-<td align="center"><strong>Catppuccin Frappé</strong><br><img src="screenshots/catppuccin-frappe.png" width="280"/></td>
+<td align="center"><strong>Symfony</strong><br><img src="screenshots/symfony.png" width="400"/></td>
+<td align="center"><strong>Microsoft</strong><br><img src="screenshots/microsoft.png" width="400"/></td>
 </tr>
 <tr>
-<td align="center"><strong>Catppuccin Macchiato</strong><br><img src="screenshots/catppuccin-macchiato.png" width="280"/></td>
-<td align="center"><strong>Catppuccin Mocha</strong><br><img src="screenshots/catppuccin-mocha.png" width="280"/></td>
+<td align="center"><strong>Schiphol</strong><br><img src="screenshots/schiphol.png" width="400"/></td>
+<td align="center"><strong>Catppuccin Latte</strong><br><img src="screenshots/catppuccin-latte.png" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><strong>Catppuccin Frappé</strong><br><img src="screenshots/catppuccin-frappe.png" width="400"/></td>
+<td align="center"><strong>Catppuccin Macchiato</strong><br><img src="screenshots/catppuccin-macchiato.png" width="400"/></td>
+</tr>
+<tr>
+<td align="center"><strong>Catppuccin Mocha</strong><br><img src="screenshots/catppuccin-mocha.png" width="400"/></td>
 <td></td>
 </tr>
 </table>
