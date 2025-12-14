@@ -60,7 +60,19 @@ final class SubSlideParser
             }
 
             // Check if this line is an h1 or h2 heading (only if not inside code block)
+            // Skip common code comment patterns like "# Note:", "# TODO:", "# FIXME:", etc.
             if (!$insideCodeBlock && preg_match('/^#{1,2}\s+(.+)$/', $line, $match)) {
+                // Skip lines that look like code comments (common patterns)
+                $heading = $match[1];
+                if (preg_match('/^(Note|TODO|FIXME|XXX|HACK|WARNING|IMPORTANT|BUG):/i', $heading)) {
+                    // Treat as content, not a heading
+                    if (!$foundFirstHeading) {
+                        $introContent .= $line . "\n";
+                    } else {
+                        $currentContent[] = $line;
+                    }
+                    continue;
+                }
                 // If we have a previous section, save it
                 if ($foundFirstHeading && $currentTitle !== null) {
                     $subSlides->push(new SubSlide(

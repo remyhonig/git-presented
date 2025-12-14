@@ -136,8 +136,8 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
     {{-- Main Content Area - Single scrollable column --}}
     <div class="flex-1 overflow-y-auto" id="slides-container">
         {{-- Title Slide (Slide 0) --}}
-        <div class="slide current-slide min-h-[calc(100vh-4rem)] flex flex-col justify-center px-4 py-8" data-slide="0" id="title-slide">
-            <div class="max-w-6xl mx-auto w-full">
+        <div class="slide current-slide min-h-[calc(100vh-4rem)] flex flex-col justify-center px-8 py-8" data-slide="0" id="title-slide">
+            <div class="w-full">
                 {{-- Main commit message (rendered as markdown for inline code support) --}}
                 <h1 class="slide-title font-bold leading-tight slide-mb prose-title text-center gradient-title">
                     {!! $page->markdown($step->getTitle()) !!}
@@ -172,7 +172,7 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
 
         @if($hasSnippet && $snippetData)
         {{-- Stacked layout for slides with code snippets: prose above, code below --}}
-        <div class="slide slide-with-snippet min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center px-4 py-8" data-slide="{{ $slideIndex }}">
+        <div class="slide slide-with-snippet min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center px-8 py-8" data-slide="{{ $slideIndex }}">
             <div class="w-full flex flex-col items-center">
                 {{-- Title --}}
                 <h2 class="slide-heading font-bold slide-mb text-center">{{ $subSlide->title }}</h2>
@@ -202,8 +202,8 @@ $progressPercent = $nav['total'] > 1 ? (($nav['index']) / ($nav['total'] - 1)) *
         </div>
         @else
         {{-- Single-column layout (no snippet) --}}
-        <div class="slide min-h-[calc(100vh-4rem)] flex flex-col justify-center px-4 py-8" data-slide="{{ $slideIndex }}">
-            <div class="max-w-6xl mx-auto w-full">
+        <div class="slide min-h-[calc(100vh-4rem)] flex flex-col justify-center px-8 py-8" data-slide="{{ $slideIndex }}">
+            <div class="w-full">
                 {{-- Title --}}
                 <h2 class="slide-heading font-bold slide-mb text-center">{!! $page->markdown($subSlide->title) !!}</h2>
 

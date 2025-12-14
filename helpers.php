@@ -322,7 +322,7 @@ if (!function_exists('renderInlineSnippet')) {
         ];
         $language = $languageMap[strtolower($extension)] ?? 'plaintext';
 
-        $html = '<div class="code-snippet inline-snippet rounded-lg overflow-hidden flex flex-col my-4 mx-auto" style="width: fit-content; max-width: 100%; background: var(--bg-card); border: 1px solid var(--border-primary); box-shadow: var(--shadow-lg);">';
+        $html = '<div class="code-snippet inline-snippet rounded-lg overflow-hidden flex flex-col my-4 mx-auto" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-primary); box-shadow: var(--shadow-lg);">';
 
         // Title Bar
         $html .= '<div class="px-4 py-2 flex items-center justify-center" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-primary);">';

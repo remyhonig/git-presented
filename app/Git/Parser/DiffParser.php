@@ -159,6 +159,9 @@ class DiffParser
                         oldLineNumber: null,
                         newLineNumber: null,
                     ));
+                } elseif (str_starts_with($line, '#')) {
+                    // Git comment/note line (e.g., "# Note: ...") - skip as metadata
+                    continue;
                 }
             }
         }

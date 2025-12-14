@@ -73,7 +73,7 @@ $languageMap = [
 $language = $languageMap[strtolower($extension)] ?? 'plaintext';
 @endphp
 
-<div class="code-snippet rounded-lg overflow-hidden flex flex-col" style="width: fit-content; max-width: 100%; background: var(--bg-card); border: 1px solid var(--border-primary); box-shadow: var(--shadow-lg);" data-snippet-width="{{ $snippetWidth }}">
+<div class="code-snippet rounded-lg overflow-hidden flex flex-col" style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-primary); box-shadow: var(--shadow-lg);" data-snippet-width="{{ $snippetWidth }}">
     {{-- Title Bar --}}
     <div class="px-4 py-2 flex items-center justify-center" style="background: var(--bg-secondary); border-bottom: 1px solid var(--border-primary);">
         <span class="text-sm font-medium truncate" style="color: var(--text-primary);" title="{{ $snippet->filePath }}">

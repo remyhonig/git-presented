@@ -77,7 +77,7 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
 }
 @endphp
 
-<div id="{{ $fileId }}" class="diff-file-compact scroll-mt-4 border border-gray-300 rounded-md overflow-hidden shadow-sm" x-data="{ viewMode: 'diff' }">
+<div id="{{ $fileId }}" class="diff-file-compact scroll-mt-4 border border-gray-300 rounded-md overflow-hidden shadow-sm" x-data="{ viewMode: '{{ $isNewFile && $newContent !== null ? 'new' : 'diff' }}' }">
     {{-- File Header (GitHub-style) --}}
     <div class="diff-file-header bg-gray-100 px-3 py-2 flex items-center justify-between border-b border-gray-300">
         <div class="flex items-center space-x-2 min-w-0">
@@ -127,57 +127,66 @@ if (!$isBinaryFile && isset($gitRepo) && isset($commitHash)) {
     @else
     {{-- Diff View --}}
     <div x-show="viewMode === 'diff'" class="diff-hunks bg-white">
-        @foreach($file->getHunks() as $hunk)
-        <div class="diff-hunk">
-            {{-- Diff Lines (GitHub-style table, optimized for projection) --}}
-            <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);">
-                <tbody>
-                    @foreach($hunk->getLines() as $line)
-                    <tr class="
-                        @if($line->isAdd()) bg-green-50 hover:bg-green-100
-                        @elseif($line->isRemove()) bg-red-50 hover:bg-red-100
-                        @else hover:bg-gray-50
-                        @endif">
-                        {{-- Old line number --}}
-                        <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 align-baseline
-                            @if($line->isAdd()) bg-green-100/50
-                            @elseif($line->isRemove()) bg-red-100/50
-                            @else bg-gray-50
-                            @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
-                            <span class="px-1">{{ $line->oldLineNumber ?? '' }}</span>
-                        </td>
-                        {{-- New line number --}}
-                        <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 align-baseline
-                            @if($line->isAdd()) bg-green-100/50
-                            @elseif($line->isRemove()) bg-red-100/50
-                            @else bg-gray-50
-                            @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
-                            <span class="px-1">{{ $line->newLineNumber ?? '' }}</span>
-                        </td>
-                        {{-- Prefix (+/-/space) --}}
-                        <td class="text-center select-none align-baseline
-                            @if($line->isAdd()) text-green-700 bg-green-100
-                            @elseif($line->isRemove()) text-red-700 bg-red-100
-                            @elseif($line->isNoNewline()) text-gray-400 bg-gray-100 italic
-                            @else text-gray-400
-                            @endif" style="width: 1.5rem; font-size: inherit; line-height: inherit;">
-                            {{ $line->getPrefix() }}
-                        </td>
-                        {{-- Content with syntax highlighting --}}
-                        @php
-                        $contentClass = 'diff-line-content pl-2 whitespace-pre overflow-x-auto align-baseline';
-                        if ($line->isAdd()) $contentClass .= ' text-green-900';
-                        elseif ($line->isRemove()) $contentClass .= ' text-red-900';
-                        elseif ($line->isNoNewline()) $contentClass .= ' text-gray-500 italic';
-                        else $contentClass .= ' text-gray-800';
-                        @endphp
-                        <td class="{{ $contentClass }}" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no">{{ $line->content }}</code></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endforeach
+        {{-- Single table for all hunks to ensure consistent column widths --}}
+        <table class="w-full font-mono border-separate" style="border-spacing: 0; font-size: var(--font-code-snippet); line-height: var(--line-height-code);">
+            <tbody>
+                @foreach($file->getHunks() as $hunkIndex => $hunk)
+                @if($hunkIndex > 0)
+                {{-- Hunk separator row - paper tear effect --}}
+                <tr class="hunk-separator">
+                    <td colspan="4" class="p-0 relative overflow-hidden" style="height: 1.5rem; background: var(--bg-secondary);">
+                        {{-- Top jagged edge --}}
+                        <div class="absolute inset-x-0 top-0" style="height: 6px; background: var(--bg-card); clip-path: polygon(0% 0%, 3% 100%, 6% 0%, 9% 100%, 12% 0%, 15% 100%, 18% 0%, 21% 100%, 24% 0%, 27% 100%, 30% 0%, 33% 100%, 36% 0%, 39% 100%, 42% 0%, 45% 100%, 48% 0%, 51% 100%, 54% 0%, 57% 100%, 60% 0%, 63% 100%, 66% 0%, 69% 100%, 72% 0%, 75% 100%, 78% 0%, 81% 100%, 84% 0%, 87% 100%, 90% 0%, 93% 100%, 96% 0%, 100% 100%, 100% 0%);"></div>
+                        {{-- Bottom jagged edge --}}
+                        <div class="absolute inset-x-0 bottom-0" style="height: 6px; background: var(--bg-card); clip-path: polygon(0% 100%, 0% 0%, 4% 100%, 8% 0%, 12% 100%, 16% 0%, 20% 100%, 24% 0%, 28% 100%, 32% 0%, 36% 100%, 40% 0%, 44% 100%, 48% 0%, 52% 100%, 56% 0%, 60% 100%, 64% 0%, 68% 100%, 72% 0%, 76% 100%, 80% 0%, 84% 100%, 88% 0%, 92% 100%, 96% 0%, 100% 100%);"></div>
+                    </td>
+                </tr>
+                @endif
+                @foreach($hunk->getLines() as $line)
+                <tr class="
+                    @if($line->isAdd()) bg-green-50 hover:bg-green-100
+                    @elseif($line->isRemove()) bg-red-50 hover:bg-red-100
+                    @else hover:bg-gray-50
+                    @endif">
+                    {{-- Old line number --}}
+                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 align-baseline
+                        @if($line->isAdd()) bg-green-100/50
+                        @elseif($line->isRemove()) bg-red-100/50
+                        @else bg-gray-50
+                        @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
+                        <span class="px-1">{{ $line->oldLineNumber ?? '' }}</span>
+                    </td>
+                    {{-- New line number --}}
+                    <td class="text-right pr-3 select-none text-gray-400 border-r border-gray-200 align-baseline
+                        @if($line->isAdd()) bg-green-100/50
+                        @elseif($line->isRemove()) bg-red-100/50
+                        @else bg-gray-50
+                        @endif" style="min-width: 3rem; font-size: inherit; line-height: inherit;">
+                        <span class="px-1">{{ $line->newLineNumber ?? '' }}</span>
+                    </td>
+                    {{-- Prefix (+/-/space) --}}
+                    <td class="text-center select-none align-baseline
+                        @if($line->isAdd()) text-green-700 bg-green-100
+                        @elseif($line->isRemove()) text-red-700 bg-red-100
+                        @elseif($line->isNoNewline()) text-gray-400 bg-gray-100 italic
+                        @else text-gray-400
+                        @endif" style="width: 1.5rem; font-size: inherit; line-height: inherit;">
+                        {{ $line->getPrefix() }}
+                    </td>
+                    {{-- Content with syntax highlighting --}}
+                    @php
+                    $contentClass = 'diff-line-content pl-2 whitespace-pre overflow-x-auto align-baseline';
+                    if ($line->isAdd()) $contentClass .= ' text-green-900';
+                    elseif ($line->isRemove()) $contentClass .= ' text-red-900';
+                    elseif ($line->isNoNewline()) $contentClass .= ' text-gray-500 italic';
+                    else $contentClass .= ' text-gray-800';
+                    @endphp
+                    <td class="{{ $contentClass }}" style="line-height: inherit;"><code class="language-{{ $language }}" data-highlighted="no">{{ $line->content }}</code></td>
+                </tr>
+                @endforeach
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
     {{-- Result (New) View (optimized for projection) --}}
