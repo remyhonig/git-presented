@@ -252,6 +252,16 @@ Register in `source/_layouts/main.blade.php` and `source/js/main.js`.
 - Composer
 - Git
 
+## Built With
+
+- [Jigsaw](https://jigsaw.tighten.com/) - Static site generator for Laravel Blade
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [htmx](https://htmx.org/) - High-power tools for HTML
+- [Alpine.js](https://alpinejs.dev/) - Lightweight JavaScript framework
+- [highlight.js](https://highlightjs.org/) - Syntax highlighting
+- [CommonMark](https://commonmark.thephpleague.com/) - Markdown parsing
+- [Catppuccin](https://catppuccin.com/) - Pastel color palette themes
+
 ## Contributing
 
 PRs welcome. Please open an issue first for major changes.
