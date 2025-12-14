@@ -260,6 +260,7 @@ Register in `source/_layouts/main.blade.php` and `source/js/main.js`.
 - [Alpine.js](https://alpinejs.dev/) - Lightweight JavaScript framework
 - [highlight.js](https://highlightjs.org/) - Syntax highlighting
 - [CommonMark](https://commonmark.thephpleague.com/) - Markdown parsing
+- [sebastian/diff](https://github.com/sebastianbergmann/diff) - Diff generation
 - [Catppuccin](https://catppuccin.com/) - Pastel color palette themes
 
 ## Contributing
